@@ -121,7 +121,9 @@ function ensureNumberType() {
 
 let hallSVG = ref<File>()
 let hallCode = ref()
-watch(hallSVG, async value => hallCode.value = await value?.text())
+watch(hallSVG, async value => {
+  hallCode.value = await value?.text()
+})
 
 // base64 img
 let hallImagePreviews = ref<string>()
@@ -202,7 +204,7 @@ watch(locationSearchRequest, async (value) => {
 
             <v-file-input v-model="hallSVG" label="Загрузить SVG" variant="outlined" density="compact" class="w-100"></v-file-input>
 
-            <div v-html="hallCode" />
+            <div id="hall-container" v-html="hallCode" />
 
             <!-- <v-data-table :items="tables" :headers="tablesHeaders" :items-per-page="5" v-model:page="tablePage"
               class="mt-4">

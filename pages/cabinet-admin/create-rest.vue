@@ -1,22 +1,16 @@
 <script lang="ts" setup>
 import getPossibleLocations from "../../composables/dadata";
 import type { Location } from "../../types/location.interface"
+import { useField, useForm } from 'vee-validate'
 
 definePageMeta({
   middleware: 'auth'
 })
-
 useSeoMeta({
   title: 'Создать ресторан'
 })
 
 const config = useRuntimeConfig()
-
-
-
-// other imports
-import { useField, useForm } from 'vee-validate'
-
 const restStore = useRest()
 const authStore = useAuth()
 const router = useRouter()
@@ -24,8 +18,6 @@ const router = useRouter()
 let loading = ref(false)
 let schedule = ref('')
 let description = ref('')
-
-
 
 const { meta, handleSubmit, validate } = useForm({
   initialValues: {
