@@ -2,13 +2,14 @@
 import getPossibleLocations from "../../composables/dadata";
 import type { Location } from "../../types/location.interface"
 
-// meta
-useHead({
-  title: 'Создать ресторан'
-})
 definePageMeta({
   middleware: 'auth'
 })
+
+useSeoMeta({
+  title: 'Создать ресторан'
+})
+
 const config = useRuntimeConfig()
 
 

@@ -1,20 +1,15 @@
 <script lang="ts" setup>
 import getPossibleLocations from "../../composables/dadata";
+import { useField, useForm } from 'vee-validate'
 import type { Location } from "../../types/location.interface"
 import type { Table } from '../../types/table.interface'
-// meta
-useHead({
+
+useSeoMeta({
   title: 'Рестик | Создать зал'
 })
 definePageMeta({
   middleware: 'auth'
 })
-
-
-
-
-// other imports
-import { useField, useForm } from 'vee-validate'
 
 const restStore = useRest()
 const authStore = useAuth()
@@ -124,6 +119,10 @@ function ensureNumberType() {
 }
 
 
+let hallSVG = ref<File>()
+let hallCode = ref()
+watch(hallSVG, async value => hallCode.value = await value?.text())
+
 // base64 img
 let hallImagePreviews = ref<string>()
 function uploadHallImage(file: File, index: Number) {
@@ -167,11 +166,11 @@ const submit = handleSubmit(async values => {
 
 
 watch(locationSearchRequest, async (value) => {
-      const locations: any= await getPossibleLocations(value); // any - костыль надо переписать dadata.ts
-      possibleLocations.value = locations ?? []; // Если locations undefined, присваиваем пустой массив
-    });
-
+  const locations: any = await getPossibleLocations(value); // any - костыль надо переписать dadata.ts
+  possibleLocations.value = locations ?? []; // Если locations undefined, присваиваем пустой массив
+})
 </script>
+
 <template>
   <ClientOnly>
     <v-container>
@@ -198,8 +197,14 @@ watch(locationSearchRequest, async (value) => {
             <!-- {{ location }} -->
         
             <img  :src="hallImagePreviews" style="max-height: 200px; margin: 2px;">
-            <HallImageInput :title="'зал'" @uploadHallImage="uploadHallImage" />
-            <v-data-table :items="tables" :headers="tablesHeaders" :items-per-page="5" v-model:page="tablePage"
+            <HallImageInput title="зал" @uploadHallImage="uploadHallImage" />
+
+
+            <v-file-input v-model="hallSVG" label="Загрузить SVG" variant="outlined" density="compact" class="w-100"></v-file-input>
+
+            <div v-html="hallCode" />
+
+            <!-- <v-data-table :items="tables" :headers="tablesHeaders" :items-per-page="5" v-model:page="tablePage"
               class="mt-4">
               <template v-slot:top>
                 <div class="d-flex justify-space-between w-100">
@@ -239,7 +244,7 @@ watch(locationSearchRequest, async (value) => {
               <template v-slot:bottom>
                 <v-pagination v-model="tablePage" :length="Math.ceil(tables.length / 5)"></v-pagination>
               </template>
-            </v-data-table>
+            </v-data-table> -->
             <v-btn class="ma-auto mt-4" variant="tonal" type="submit" :loading="loading" :disabled="!meta.valid">
               Отправить
             </v-btn>
