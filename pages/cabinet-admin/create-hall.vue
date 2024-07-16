@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-
-import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import getPossibleLocations from "../../composables/dadata";
 import type { Location } from "../../types/location.interface"
 import type { Table } from '../../types/table.interface'
