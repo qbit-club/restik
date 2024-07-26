@@ -122,7 +122,23 @@ function ensureNumberType() {
 let hallSVG = ref<File>()
 let hallCode = ref()
 watch(hallSVG, async value => {
-  hallCode.value = await value?.text()
+  let hall_container = document.getElementById('hall-container') as HTMLElement
+  hall_container.innerHTML = await value?.text() ?? ''
+  
+  // let hall_container = document.getElementById('hall-container')
+  let all_groups = document.querySelectorAll('#hall-container g')
+  all_groups.forEach((el, key) => {
+    if (key === 0) return 
+
+    let rect = el.getBoundingClientRect()
+    let back_rect = document.createElement('rect')
+    back_rect.setAttribute('width', String(rect.width))
+    back_rect.setAttribute('height', String(rect.height))
+    back_rect.setAttribute('fill', 'none')
+
+    el.appendChild(back_rect)
+    el.setAttribute('style', 'cursor: pointer;')
+  })
 })
 
 // base64 img
@@ -204,7 +220,7 @@ watch(locationSearchRequest, async (value) => {
 
             <v-file-input v-model="hallSVG" label="Загрузить SVG" variant="outlined" density="compact" class="w-100"></v-file-input>
 
-            <div id="hall-container" v-html="hallCode" />
+            <div id="hall-container"></div>
 
             <!-- <v-data-table :items="tables" :headers="tablesHeaders" :items-per-page="5" v-model:page="tablePage"
               class="mt-4">
