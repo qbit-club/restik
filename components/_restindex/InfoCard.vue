@@ -2,7 +2,7 @@
 import type { RestFromDb } from '~/types/rest-from-db.interface';
 
 defineProps<{
-    info: RestFromDb
+  rest: RestFromDb
 }>()
 
 </script>
@@ -12,7 +12,7 @@ defineProps<{
       Информация
     </h3>
     <p>
-      Описание: <span v-html="info.description"></span>
+      Описание: <span v-html="rest.description"></span>
     </p>
    
   </div>

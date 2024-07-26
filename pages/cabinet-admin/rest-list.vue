@@ -30,7 +30,7 @@ let restsWithFilter = computed(() => {
 
 })
 let getRestList = async () => {
-    let {data} = await restStore.get()
+    let { data } = await restStore.get()
     rests.value = data.value
 }
 let deleteRest = async (id: string) => {
@@ -65,35 +65,33 @@ getRestList()
             </v-col>
 
             <v-col cols="12" v-for="rest, index in restsWithFilter" :key="index">
-                <NuxtLink :to="`/${rest.alias}`">
-                    <div class="d-flex justify-space-between">
-                        <div class="d-flex align-center">
-                            <div style="width: 50px">
-                                <v-img :src="rest.images.logo"></v-img>
-                            </div>
-
-                            <h4 class="ma-4"> {{ rest.title }}</h4>
+                <div class="d-flex justify-space-between">
+                    <div class="d-flex align-center cursor-pointer" @click="router.push(`/${rest.alias}`)">
+                        <div style="width: 50px">
+                            <v-img :src="rest.images.logo"></v-img>
                         </div>
-                        <div class="d-flex">
-                            <div class="d-flex flex-column align-center pa-4">
-                                <v-icon icon="mdi-pencil" size="x-large" />
-                                <div class="explanation text-center">редактировать</div>
 
-                            </div>
-                            <div class="d-flex flex-column align-center pa-4">
-                                <v-icon icon="mdi-eye-off-outline" size="x-large" />
-                                <div class="explanation text-center">спрятать</div>
+                        <h4 class="ma-4"> {{ rest.title }}</h4>
+                    </div>
+                    <div class="d-flex">
+                        <div class="d-flex flex-column align-center pa-4 cursor-pointer"
+                            @click="router.push(`/cabinet-admin/rest-info?rest_id=${rest._id}`)">
+                            <v-icon icon="mdi-pencil" size="x-large" />
+                            <div class="explanation text-center">редактировать</div>
 
-                            </div>
-                            <div class="d-flex flex-column align-center pa-4" @click="deleteRest(rest._id)">
-                                <v-icon icon="mdi-trash-can-outline" size="x-large" />
-                                <div class="explanation text-center">удалить</div>
+                        </div>
+                        <div class="d-flex flex-column align-center pa-4">
+                            <v-icon icon="mdi-eye-off-outline" size="x-large" />
+                            <div class="explanation text-center">спрятать</div>
 
-                            </div>
+                        </div>
+                        <div class="d-flex flex-column align-center pa-4" @click="deleteRest(rest._id)">
+                            <v-icon icon="mdi-trash-can-outline" size="x-large" />
+                            <div class="explanation text-center">удалить</div>
+
                         </div>
                     </div>
-
-                </NuxtLink>
+                </div>
                 <v-divider></v-divider>
             </v-col>
 

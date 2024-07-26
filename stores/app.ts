@@ -6,6 +6,7 @@ import type { App } from "../types/app.interface"
 
 
 export const useApp = defineStore('app', () => {
+  let appState = ref<App>()
 
   async function createFoodCategory(category: string[]) {
     return await AppApi.createFoodCategory(category)
@@ -17,8 +18,16 @@ export const useApp = defineStore('app', () => {
   async function deleteFoodCategory (category: string) {
     return await AppApi.deleteFoodCategory(category)
   }
+  async function getAppState() {
+    let res = await AppApi.getAppState()
+    appState.value = res.data.value
+    return res
+  }
 
-
-
-  return { createFoodCategory, getFoodCategory, deleteFoodCategory }
+  return {
+    // functions
+    createFoodCategory, getFoodCategory, deleteFoodCategory, getAppState,
+    // variables
+    appState
+  }
 })

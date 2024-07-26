@@ -3,17 +3,18 @@ import { useWindowSize } from '@vueuse/core'
 const { width } = useWindowSize()
 
 const router = useRouter()
+let auth = useAuth()
 
 let navigationDrawer = ref<boolean>(false)
 
 const routes = [
-{
+  {
     value: '/',
     title: "Выбор ресторана",
     icon: "mdi-home-outline"
   },
   {
-    value: '/cabinet',
+    value: '/cabinet-user/profile',
     title: "Пользователь",
     icon: "mdi-account-outline"
   },
@@ -30,9 +31,6 @@ const routes = [
 
 ]
 
-function navigateTo(route: any) {
-  router.push(route.id)
-}
 // создает timeout, после которого можно нажать на кнопку,
 // без этой функции анимация открытия ломается
 let canClickOnSpeedDial = ref(true)
@@ -45,13 +43,14 @@ function ensureCanClick() {
   }, 400)
 }
 
-let auth = useAuth()
+let appStore = useApp()
 await auth.checkAuth()
+await appStore.getAppState()
 </script>
 <template>
   <v-responsive>
-    <v-app>
-      <v-app-bar :elevation="0" class="d-none d-md-block">
+    <v-app class="overflow-y-auto" style="max-height: 100dvh">
+      <!-- <v-app-bar :elevation="0" class="d-none d-md-block">
         <div class="w-100 d-flex justify-space-between align-center">
 
           <div class="flex-grow-1 flex-shrink-0"> 
@@ -61,7 +60,15 @@ await auth.checkAuth()
 
         </div>
 
-      </v-app-bar>
+      </v-app-bar> -->
+      <div class="d-none d-md-block ">
+        <div class="logo">
+          <img src="../assets/images/logo.svg" alt="logo" @click="router.push('/')"  height="100%" />
+        </div>
+       
+        <v-icon icon="mdi-hamburger" class="menu-button"
+          @click="navigationDrawer = !navigationDrawer" />
+      </div>
 
       <v-speed-dial transition="fade-transition" class="d-flex d-md-none">
         <template v-slot:activator="{ props: activatorProps }">
@@ -70,20 +77,23 @@ await auth.checkAuth()
             class="d-flex d-md-none" @click="ensureCanClick"></v-btn>
         </template>
 
-        <v-btn key="2" @click="router.push('/')" icon="mdi-home-outline"></v-btn>
-        <v-btn key="2" @click="router.push('/cabinet')" icon="mdi-account-outline"></v-btn>
-        <v-btn key="2" @click="router.push('/cabinet-admin')" icon="mdi-account-outline"></v-btn>
-        <v-btn key="2" @click="router.push('/cabinet-manager')" icon="mdi-account-outline"></v-btn>
-      
+        <v-btn key="2" to="/" icon="mdi-home-outline"></v-btn>
+        <v-btn key="2" to="/cabinet" icon="mdi-account-outline"></v-btn>
+        <v-btn key="2" to="/cabinet-admin" icon="mdi-account-outline"></v-btn>
+        <v-btn key="2" to="/cabinet-manager" icon="mdi-account-outline"></v-btn>
+
       </v-speed-dial>
-    
+
 
       <ClientOnly>
         <!-- только на экранах md и больше, потому что на телефоне можно свайпнуть и navigation-drawer появится -->
-        <v-navigation-drawer v-if="width > 960" :model-value="navigationDrawer" location="right" temporary>
-          <v-list nav @click:select="navigateTo">
-            <v-list-item v-for="route of routes" :prepend-icon="route.icon" :title="route.title"
-              :value="route.value"></v-list-item>
+        <v-navigation-drawer v-if="width > 960" :model-value="navigationDrawer" location="right" temporary persistent
+          >
+          
+
+          <v-list nav>
+            <v-list-item v-for="route of routes" :prepend-icon="route.icon" :to="route.value" :title="route.title"
+              :value="route.value" @click="navigationDrawer=false"></v-list-item>
           </v-list>
         </v-navigation-drawer>
       </ClientOnly>
@@ -98,15 +108,26 @@ await auth.checkAuth()
 </template>
 
 <style scoped lang="scss">
-@media (max-width: 960px) {
-  .main {
-    padding-top: 0px;
-  }
+.menu-button{
+position: fixed;
+top: 25px;
+right: 25px;
+}
+.logo {
+position: fixed;
+top: 25px;
+left: 25px;
+padding: 5px;
+border-radius: 50%;
+width:50px;
+aspect-ratio: 1;
+display:flex;
+justify-content: center;
+align-items: center;
+
+background: rgba(255, 255, 255, 0.7);
 }
 
-@media (min-width: 960px) {
-  .main {
-    padding-top: 64px;
-  }
-}
+
+
 </style>

@@ -2,7 +2,7 @@
 import type { RestFromDb } from '~/types/rest-from-db.interface';
 
 defineProps<{
-    info: RestFromDb
+    rest: RestFromDb
 }>()
 </script>
 

@@ -20,6 +20,9 @@ export default {
   updateUser(user: any): Promise<any> {
     return useApiFetch('/auth/update', { method: 'POST', body: { user } })
   },
+  setManager(user_email:string,chosen_rest:string): Promise<any>{
+    return useApiFetch('/user/set-manager', { method: 'POST', body: { user_email,chosen_rest } })
+  },
   /**
    * 
    * @param userId 
@@ -30,6 +33,15 @@ export default {
       method: 'GET',
       query: {
         userId
+      }
+    })
+  },
+  chooseManagingRest(userId: string, restId: string): Promise<any> {
+    return useApiFetch('/user/choose-managing-rest', {
+      method: 'PATCH',
+      body: {
+        userId,
+        restId
       }
     })
   }

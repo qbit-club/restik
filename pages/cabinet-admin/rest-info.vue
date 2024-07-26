@@ -22,7 +22,7 @@ const restStore = useRest()
 const authStore = useAuth()
 const router = useRouter()
 
-let response = await restStore.getById(String(authStore.user?.managingRest))
+let response = await restStore.getById(String(router.currentRoute.value?.query?.rest_id))
 let restFromDb = response.data.value
 
 let loading = ref(false)

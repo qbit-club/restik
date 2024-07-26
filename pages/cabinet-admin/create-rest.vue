@@ -252,7 +252,8 @@ watch(locationSearchRequest, async (value) => {
               </v-col>
 
               <v-col :cols="12" class="d-flex justify-center">
-                <v-btn class="ma-auto mt-4" variant="tonal" type="submit" :loading="loading" :disabled="!meta.valid">
+                <v-btn class="ma-auto mt-4" variant="tonal" type="submit" >
+                  <!-- :loading="loading" :disabled="!meta.valid" -->
                   Отправить
                 </v-btn>
               </v-col>
