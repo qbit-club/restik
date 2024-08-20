@@ -28,7 +28,7 @@ async function getRest() {
 // getRest()
 
 
-watch(user, (newVal) => {
+watch(user, (newVal: any) => {
   managingRest.value = newVal?.managingRest;
   getRest()
 });

@@ -1,30 +1,30 @@
 <script lang="ts" setup>
-import { QuillEditor } from "@vueup/vue-quill";
-import "@vueup/vue-quill/dist/vue-quill.snow.css";
-import getPossibleLocations from "~/composables/dadata";
-import type { Location } from "~/types/location.interface";
+import { QuillEditor } from "@vueup/vue-quill"
+import "@vueup/vue-quill/dist/vue-quill.snow.css"
+import getPossibleLocations from "~/composables/dadata"
+import type { Location } from "~/types/location.interface"
 
 const props = defineProps<{
-  rest: any;
-}>();
+  rest: any
+}>()
 
-let { rest } = toRefs(props);
+let { rest } = toRefs(props)
 
-const config = useRuntimeConfig();
+const config = useRuntimeConfig()
 
 // other imports
-import { useField, useForm } from "vee-validate";
+import { useField, useForm } from "vee-validate"
 
-const restStore = useRest();
-const authStore = useAuth();
-const router = useRouter();
+const restStore = useRest()
+const authStore = useAuth()
+const router = useRouter()
 
 // let response = await restStore.getById(String(authStore.user?.managingRest));
 
-let loading = ref(false);
-let schedule = ref(rest.value?.schedule ?? "");
-let description = ref(rest.value?.description ?? "");
-let isHidden = ref<boolean>(rest.value?.isHidden ?? "");
+let loading = ref(false)
+let schedule = ref(rest.value?.schedule ?? "")
+let description = ref(rest.value?.description ?? "")
+let isHidden = ref<boolean>(rest.value?.isHidden ?? "")
 
 const { meta, handleSubmit, setValues, validate } = useForm({
   initialValues: {
@@ -45,115 +45,108 @@ const { meta, handleSubmit, setValues, validate } = useForm({
   },
   validationSchema: {
     title(value: string) {
-      if (value?.trim().length < 4) return "слишком короткий заголовок";
-      if (value?.length > 32) return "слишком длинный заголовок";
+      if (value?.trim().length < 4) return "слишком короткий заголовок"
+      if (value?.length > 32) return "слишком длинный заголовок"
 
-      return true;
+      return true
     },
     type(value: string) {
-      if (value?.trim().length < 2) return "слишком короткий заголовок";
-      if (value?.length > 32) return "слишком длинный заголовок";
+      if (value?.trim().length < 2) return "слишком короткий заголовок"
+      if (value?.length > 32) return "слишком длинный заголовок"
 
-      return true;
+      return true
     },
     alias(value: String) {
-      if (value?.trim().length < 4) return "слишком короткий псевдоним";
-      if (value?.length > 32) return "слишком длинный псевдоним";
-      let regexp = /[а-яё]/i;
+      if (value?.trim().length < 4) return "слишком короткий псевдоним"
+      if (value?.length > 32) return "слишком длинный псевдоним"
+      let regexp = /[а-яё]/i
       if (regexp.test(value?.trim())) {
-        return "уберите кириллицу";
+        return "уберите кириллицу"
       }
-      return true;
+      return true
     },
     phone(value: string) {
-      let regexp = /^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/g;
-      if (!regexp.test(value?.trim())) return "неправильный формат";
+      let regexp = /^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/g
+      if (!regexp.test(value?.trim())) return "неправильный формат"
 
-      return true;
+      return true
     },
     socialMedia(value: string) {
-      let regexp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi;
-      if (!regexp.test(value?.trim())) return "неправильный формат";
+      let regexp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi
+      if (!regexp.test(value?.trim())) return "неправильный формат"
 
-      return true;
+      return true
     },
   },
-});
+})
 
-let title = useField<string>("title");
-let type = useField<string>("type");
-let alias = useField<string>("alias");
-let phone = useField<string>("phone");
-let socialMedia = useField<string>("socialMedia");
+let title = useField<string>("title")
+let type = useField<string>("type")
+let alias = useField<string>("alias")
+let phone = useField<string>("phone")
+let socialMedia = useField<string>("socialMedia")
 
-let imagesFormData = new FormData();
+let imagesFormData = new FormData()
 
-let location = ref<any>(rest.value?.location);
-const locationSearchRequest = ref<string>("");
-const possibleLocations = ref<Location[] | undefined>(undefined);
+let location = ref<any>(rest.value?.location)
+const locationSearchRequest = ref<string>("")
+const possibleLocations = ref<Location[] | undefined>(undefined)
 
 let locationToSend = computed(() => {
   if (location.value) {
-    location.value.type = "Point";
-    location.value.coordinates = [
-      Number(location.value.geo_lat),
-      Number(location.value.geo_lon),
-    ];
-    return location.value;
+    location.value.type = "Point"
+    location.value.coordinates = [Number(location.value.geo_lat), Number(location.value.geo_lon)]
+    return location.value
   }
-});
+})
 
 // base64 img
-let logoPreview = ref<any>(rest.value?.images?.logo);
+let logoPreview = ref<any>(rest.value?.images?.logo)
 function uploadLogo(file: File) {
   // example filename: logo_216262666_best-burger.jpg
-  imagesFormData.set(
-    "logo",
-    file,
-    "logo_" + String(Date.now()) + "_" + String(alias.value.value) + ".jpg"
-  );
+  imagesFormData.set("logo", file, "logo_" + String(Date.now()) + "_" + String(alias.value.value) + ".jpg")
   // make a preview
-  let reader = new FileReader();
+  let reader = new FileReader()
   reader.onloadend = function () {
-    logoPreview.value = reader.result;
-  };
-  reader.readAsDataURL(file);
+    logoPreview.value = reader.result
+  }
+  reader.readAsDataURL(file)
 }
 // base64 img
-let headerImagePreview = ref<any>(rest.value?.images?.headerimage);
+let headerImagePreview = ref<any>(rest.value?.images?.headerimage)
 function uploadHeaderImage(file: File) {
   // example filename: headerimage_216262666_best-burger.jpg
   imagesFormData.set(
     "headerimage",
     file,
     "headerimage_" + String(Date.now()) + "_" + String(alias.value.value) + ".jpg"
-  );
+  )
   // make a preview
-  let reader = new FileReader();
+  let reader = new FileReader()
   reader.onloadend = function () {
-    headerImagePreview.value = reader.result;
-  };
-  reader.readAsDataURL(file);
+    headerImagePreview.value = reader.result
+  }
+  reader.readAsDataURL(file)
 }
 
 watch(rest, () => {
-  schedule.value =rest.value?.schedule ?? "";
-  description.value = rest.value?.description ?? "";
-  isHidden.value = rest.value?.isHidden ?? "";
+  schedule.value = rest.value?.schedule ?? ""
+  description.value = rest.value?.description ?? ""
+  isHidden.value = rest.value?.isHidden ?? ""
   setValues({
     title: rest.value?.title ?? "",
     type: rest.value?.type ?? "",
     alias: rest.value?.alias ?? "",
     phone: rest.value?.phone ?? "",
     socialMedia: rest.value?.socialMedia ?? "",
-  });
-  location.value = rest.value?.location;
-  headerImagePreview.value = rest.value?.images?.headerimage;
-  logoPreview.value = rest.value?.images?.logo;
-});
+  })
+  location.value = rest.value?.location
+  headerImagePreview.value = rest.value?.images?.headerimage
+  logoPreview.value = rest.value?.images?.logo
+})
 
 const submit = handleSubmit(async (values) => {
-  loading.value = true;
+  loading.value = true
 
   let toSend = {
     ...values,
@@ -162,29 +155,29 @@ const submit = handleSubmit(async (values) => {
     schedule: schedule.value,
     author: String(authStore.user?._id),
     isHidden: isHidden.value,
-  };
+  }
 
-  let res = await restStore.update(toSend, rest.value?._id);
+  let res = await restStore.update(toSend, rest.value?._id)
 
   if (res.status.value == "success") {
-    let _id = res.data.value._id;
-    let uplRes = await restStore.uploadImages(imagesFormData, _id);
+    let _id = res.data.value._id
+    let uplRes = await restStore.uploadImages(imagesFormData, _id)
 
     if (uplRes.status.value == "success") {
-      loading.value = false;
-      router.push("/");
+      loading.value = false
+      router.push("/")
     } else {
-      console.log(uplRes);
+      console.log(uplRes)
     }
   } else {
-    console.log(res);
+    console.log(res)
   }
-});
+})
 
-watch(locationSearchRequest, async (value) => {
-  const locations: any = await getPossibleLocations(value); // any - костыль надо переписать dadata.ts
-  possibleLocations.value = locations ?? []; // Если locations undefined, присваиваем пустой массив
-});
+watch(locationSearchRequest, async (value: any) => {
+  const locations: any = await getPossibleLocations(value) // any - костыль надо переписать dadata.ts
+  possibleLocations.value = locations ?? [] // Если locations undefined, присваиваем пустой массив
+})
 </script>
 <template>
   <ClientOnly>
@@ -192,9 +185,7 @@ watch(locationSearchRequest, async (value) => {
       <v-row class="justify-center pb-16">
         <v-col :cols="12" sm="10" class="pa-0">
           <v-form @submit.prevent="submit">
-            <div class="font-weight-bold text-center" style="font-size: 20px">
-              Редактировать ресторан
-            </div>
+            <div class="font-weight-bold text-center" style="font-size: 20px">Редактировать ресторан</div>
             <v-row>
               <v-col cols="12">
                 <div class="label">Название</div>
@@ -230,9 +221,7 @@ watch(locationSearchRequest, async (value) => {
                 />
                 <div v-if="alias.value.value.length > 0" class="label text-right">
                   url ресторана:
-                  <i style="text-decoration: underline">{{
-                    config.public.siteUrl + "/" + alias.value.value
-                  }}</i>
+                  <i style="text-decoration: underline">{{ config.public.siteUrl + "/" + alias.value.value }}</i>
                 </div>
               </v-col>
               <v-col cols="12" md="6">
@@ -276,11 +265,7 @@ watch(locationSearchRequest, async (value) => {
                     theme="snow"
                     v-model:content="description"
                     contentType="html"
-                    :toolbar="[
-                      ['bold', 'italic', 'underline'],
-                      [{ list: 'ordered' }, { list: 'bullet' }],
-                      ['clean'],
-                    ]"
+                    :toolbar="[['bold', 'italic', 'underline'], [{ list: 'ordered' }, { list: 'bullet' }], ['clean']]"
                   />
                 </div>
               </v-col>
@@ -300,21 +285,13 @@ watch(locationSearchRequest, async (value) => {
                 >
                   <template v-slot:no-data>
                     <div class="pt-2 pr-4 pb-2 pl-4">
-                      {{
-                        locationSearchRequest.trim().length < 3
-                          ? "Минимум 3 символа"
-                          : "Не найдено"
-                      }}
+                      {{ locationSearchRequest.trim().length < 3 ? "Минимум 3 символа" : "Не найдено" }}
                     </div>
                   </template>
                 </v-autocomplete>
               </v-col>
 
-              <v-col
-                :cols="12"
-                style="margin-bottom: 80px"
-                v-if="logoPreview || headerImagePreview"
-              >
+              <v-col :cols="12" style="margin-bottom: 80px" v-if="logoPreview || headerImagePreview">
                 <div style="height: 30vh; position: relative">
                   <v-img :src="headerImagePreview" max-height="25vh" cover alt="" />
                   <div class="logo" v-if="logoPreview">
@@ -331,7 +308,6 @@ watch(locationSearchRequest, async (value) => {
               <v-col :cols="12" class="d-flex justify-center">
                 <LogoInput @uploadImage="uploadLogo" />
                 <HeaderImageInput @uploadHeaderImage="uploadHeaderImage" />
-                {{ rest.title }}
                 <!-- <div
                   class="tab pa-4 cursor-pointer file-input-label"
                   :class="{ 'show-hide': isHidden }"
