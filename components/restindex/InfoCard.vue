@@ -8,9 +8,9 @@ defineProps<{
 </script>
 <template>
   <v-container>
-    <v-row>
-      <v-col>
-        <v-card class="pa-8" width="fit-content" min-width="300">
+    <v-row class="justify-center pb-16">
+      <v-col :cols="12" :sm="10" :md="8" class="pa-0">
+        <v-card class="pa-8" width="100%" min-width="300" title="Информация">
         <p>
           <span v-html="rest.description"></span>
         </p>
