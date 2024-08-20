@@ -78,6 +78,7 @@ async function order() {
   })
   if (response.status.value == "success") {
     loading.value = false
+    console.log(response)
     let orderId = response.data.value.order._id
     let tmpId = orderId.slice(orderId.length - 5, orderId.length)
     toast(`Заказ №${tmpId} принят!`, {

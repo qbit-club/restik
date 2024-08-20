@@ -14,13 +14,13 @@ await userStore.checkAuth()
 await appStore.getAppState()
 
 let isAdmin = computed(() => {
-  return user.value?.roles.includes('admin') ?? false
+  return user?.value?.roles?.includes('admin') ?? false
 })
 let isManager = computed(() => {
-  return user.value?.roles.includes('manager') ?? false
+  return user?.value?.roles?.includes('manager') ?? false
 })
 let isLoggedIn = computed(() => {
-  if (user.value?._id) return true
+  if (user?.value?._id) return true
   return false
 })
 
