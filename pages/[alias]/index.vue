@@ -63,7 +63,7 @@ rest.value = res.data.value
         <v-col :cols="12">
           <v-row>
             <v-col :cols="12" style="position: relative;" class="pa-0">
-              <a :href="`tel:${rest?.phone}`"> <span class="phone"> <v-icon icon="mdi-phone" /> {{ rest?.phone }}
+              <a :href="`tel:${rest?.phone}`"> <span class="phone p-clamp pa-1 pa-sm-2 pa-md-3"> <v-icon icon="mdi-cellphone" /> {{ rest?.phone }}
                 </span></a>
               <div class="vk">
                 <a :href="rest?.socialMedia" target="_blank">
@@ -77,8 +77,6 @@ rest.value = res.data.value
                     class="mt-4 ml-md-6 ml-4" @click="startShare()">
 
                   </v-btn>
-
-
 
                 </v-img>
               </div>
@@ -170,10 +168,10 @@ rest.value = res.data.value
 }
 
 .phone {
-  background: rgba(256, 256, 256, 0.8);
+  background: rgba(256, 256, 256, 0.9);
   font-weight: 600;
   color: black;
-  padding: 10px;
+ 
   border-radius: 5px;
   position: absolute;
   right: 25px;
