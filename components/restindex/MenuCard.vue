@@ -45,7 +45,8 @@ function minusCart() {
 </script>
 <template>
     <div class="font-weight-bold mb-2">{{ meal.name }}</div>
-    <div v-if="meal.health.fat|| meal.health.protein || meal.health.carb" class="text-caption">жиры {{ meal.health.fat }}г белки {{ meal.health.protein }}г углеводы
+    <div v-if="meal.health.fat || meal.health.protein || meal.health.carb" class="text-caption">жиры {{ meal.health.fat
+        }}г белки {{ meal.health.protein }}г углеводы
         {{ meal.health.carb }}г </div>
     <v-card class="w-100 meal-card d-flex">
         <div class="w-100 ">
@@ -56,26 +57,29 @@ function minusCart() {
 
         <div class="w-100 pa-2 d-flex flex-column justify-space-between">
             <div>
-                <div v-if="meal.health.energy !== '0 ккал'" class="text-caption text-right font-weight-medium">{{ meal.health.energy }}/100г</div>
-                <div v-if="meal.health.mass && !meal.forWeighing" class="text-caption text-right font-weight-medium">{{ meal.health.mass }}</div>
-                <div v-if="meal.forWeighing" class="text-caption text-right font-weight-medium">1 шт ≈ {{ meal.averageMassOfOne }} кг</div>
-                
+                <div v-if="meal.health.energy !== '0 ккал'" class="text-caption text-right font-weight-medium">{{
+        meal.health.energy }}/100г</div>
+                <div v-if="meal.health.mass && !meal.forWeighing" class="text-caption text-right font-weight-medium">{{
+        meal.health.mass }}</div>
+                <div v-if="meal.forWeighing" class="text-caption text-right font-weight-medium">1 шт ≈ {{
+        meal.averageMassOfOne }} кг</div>
+
             </div>
 
 
             <div class="d-flex price  justify-center" v-if="!meal.forWeighing">
-                <div>{{ meal.price }}</div>
-                <div v-if="mealCartCount > 0">
-                    &nbsp;* {{ mealCartCount }} = {{ amount }}
+                <div class="text-center">{{ meal.price }}₽
+                    <span v-if="mealCartCount > 0">
+                        &nbsp;* {{ mealCartCount }} = {{ amount }}₽
+                    </span>
                 </div>
-                ₽
             </div>
             <div class="d-flex price  justify-center" v-else>
-                <div>{{ meal.price }}₽</div>
-                <div v-if="mealCartCount > 0">
-                    &nbsp;* {{ mealCartCount }} шт * {{ meal.averageMassOfOne }}кг = {{ amount }}
+                <div class="text-center">{{ meal.price }}₽
+                    <span v-if="mealCartCount > 0">
+                        &nbsp;* {{ mealCartCount }}шт * {{ meal.averageMassOfOne }}кг ≈ {{ amount }}₽
+                    </span>
                 </div>
-                ₽
             </div>
 
 
