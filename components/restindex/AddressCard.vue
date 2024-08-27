@@ -1,25 +1,27 @@
 <script setup lang="ts">
+import type { RestFromDb } from "~/types/rest-from-db.interface"
+
 useHead({
   title: "Глазов - есть!",
-});
+})
 const props = defineProps<{
-  rest: RestFromDb;
-}>();
+  rest: RestFromDb
+}>()
 </script>
 <template>
   <v-container>
     <v-row class="justify-center pb-16">
-      <v-col :cols="12" :sm="10" :md="8" class="pa-0">
-        <v-card class="pa-8" width="100%" min-width="300" title="Адрес">
+      <v-col :cols="12" :sm="10" :md="8">
+        <div class="my-5 d-flex align-center" style="font-weight: 600;">
+          <v-icon icon="mdi-map-marker-radius-outline" class="cursor-pointer pr-1"></v-icon>
           <a :href="`https://yandex.ru/maps/?text=${props.rest.location.name}`">
-            <p>Адрес : {{ props.rest.location.name }}</p>
+            {{ props.rest.location.name }}
           </a>
-          <Map :location="props.rest.location"></Map>
-        </v-card>
+        </div>
+        <Map :location="props.rest.location"></Map>
       </v-col>
     </v-row>
   </v-container>
 </template>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>
