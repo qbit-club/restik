@@ -18,6 +18,8 @@ interface CartItem {
       images: string[];
       health: any;
       menuItemId: string;
+      forWeighing: boolean;
+      averageMassOfOne: number;
     }
   ];
   restId: string;
@@ -54,6 +56,8 @@ export const useCart = defineStore("cart", () => {
       images: meal.images,
       health: meal.health,
       menuItemId: meal._id,
+      forWeighing: meal.forWeighing ?? false,
+      averageMassOfOne: meal.averageMassOfOne ?? 0.0,
     };
 
     // если нет такого ресторана в корзине, то создаем его
@@ -140,20 +144,25 @@ export const useCart = defineStore("cart", () => {
           count: number;
           menuItem: string;
           images: string[];
-        }[] = [];
+          forWeighing: boolean;
+          averageMassOfOne: number;
+        }[] = [];        
 
-        for (let i of item.items) {
+        for (let i of item.items) {          
           itemsToSend.push({
             price: i.price,
             count: i.count,
             menuItem: i.name,
             images: i.images,
+            forWeighing: i.forWeighing,
+            averageMassOfOne: i.averageMassOfOne,
           });
         }
         const userStore = useAuth();
         if (userStore.user?._id) {
           userInfo._id = String(userStore.user?._id);
         }
+        
         let response = await CartAPI.order({
           items: itemsToSend,
           rest: item.restId,

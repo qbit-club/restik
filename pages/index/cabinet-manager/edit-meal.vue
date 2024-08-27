@@ -43,7 +43,11 @@ let form = ref({
   },
   price: "",
   images: [],
-});
+  forWeighing: false,
+  averageMassOfOne: 0,
+})
+let massError = ref<string>('')
+let averageMassOfOne = ref<string>('0')
 
 watch(
   form,
@@ -57,12 +61,24 @@ watch(
   },
   { deep: true }
 );
+watch(averageMassOfOne, (newVal) => {
+  newVal = newVal.replaceAll(',', '.')
+  
+  if (Number.isNaN(Number(newVal))) {
+    massError.value = 'Это не число!'
+  } else {
+    form.value.averageMassOfOne = Number(newVal)
+    massError.value = ''
+  }  
+})
 
 menuItem.value = restFromDb.foodList.filter(
   (item: FoodListItemFromDb) =>
     item._id == String(router.currentRoute.value?.query?.item_id)
 )[0];
+
 Object.assign(form.value, menuItem.value);
+averageMassOfOne.value = String(menuItem.value.averageMassOfOne)
 
 let imagePreview = ref(menuItem.value.images[0]);
 let imgChanged = false
@@ -86,7 +102,6 @@ async function submit() {
   loading.value = true;
   let res = await restStore.updateMeal(
     managingRest.value,
-    String(router.currentRoute.value?.query?.item_id),
     form.value
   );
   if (res.status.value == "success") {
@@ -174,16 +189,60 @@ async function submit() {
                   variant="outlined"></v-text-field>
               </div>
             </v-col>
-            <v-col cols="12" md="6">
-              Цена
-              <v-text-field hide-details v-model="form.price" prefix="₽" density="compact"
-                variant="outlined"></v-text-field>
-            </v-col>
-            <v-col cols="12" md="6">
-              Масса
-              <v-text-field hide-details v-model="form.health.mass" density="compact" variant="outlined"
-                placeholder="500 г"></v-text-field>
-            </v-col>
+            <v-col cols="12">
+            <v-card class="pa-4">
+              <v-row>
+                <v-col cols="12" class="py-0">
+                  <v-checkbox v-model="form.forWeighing" label="Для взвешивания" hide-details></v-checkbox>
+                </v-col>
+              </v-row>
+              <v-row v-if="!form.forWeighing">
+                <v-col cols="12" md="6">
+                  Цена
+                  <v-text-field
+                    hide-details
+                    v-model="form.price"
+                    prefix="₽"
+                    density="compact"
+                    variant="outlined"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" md="6">
+                  Масса 1 шт
+                  <v-text-field
+                    hide-details
+                    v-model="form.health.mass"
+                    density="compact"
+                    variant="outlined"
+                    placeholder="500 г"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row v-else>
+                <v-col cols="12" md="6">
+                  Цена ₽ / кг.
+                  <v-text-field
+                    hide-details
+                    v-model="form.price"
+                    suffix="₽ / кг."
+                    density="compact"
+                    variant="outlined"
+                  ></v-text-field>
+                </v-col>
+
+                <v-col cols="12" md="6">
+                  примерная масса 1 шт
+                  <v-text-field
+                    v-model="averageMassOfOne"
+                    density="compact"
+                    variant="outlined"
+                    :error-messages="massError"
+                    suffix="кг"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+            </v-card>
+          </v-col>
             <v-col cols="12">
               Состав
               <v-textarea auto-grow hide-details :rows="1" v-model="form.health.ingredients" density="compact"

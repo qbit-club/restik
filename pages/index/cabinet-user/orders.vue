@@ -97,16 +97,31 @@ getOrders()
                             {{ getStatus(order.status)?.text }}
                         </v-chip>
 
-                        <div v-for="item, j in order.items" class="d-flex justify-space-between p-clamp">
-                            <span>{{ item.menuItem }}</span> <span>{{ item.count }} * {{ item.price }} = {{ (item.count
+                        <div v-for="item, j in order.items" >
+                            <div v-if="!item.forWeighing" class="d-flex justify-space-between p-clamp">
+                                <span>{{ item.menuItem }}</span> <span>{{ item.count }}шт * {{ item.price }}₽ = {{ (item.count
                                 * item.price).toFixed(2) }}
                             </span>
-
+                            </div>
+                            <div v-else class="d-flex justify-space-between p-clamp">
+                                <span>{{ item.menuItem }}</span> <span>{{ item.count }} шт * {{ item.price }}₽ * {{ item.averageMassOfOne }}кг =
+                                    {{ (item.count * item.price * item.averageMassOfOne).toFixed(2) }}
+                                </span>
+                            </div>
                         </div>
                         <v-divider></v-divider>
-                        <div class="text-end p-clamp"><i> <b> Итого: {{ order.items.reduce((accumulator: number,
-                            current: any) => accumulator + current.count * current.price, 0).toFixed(2) }}₽
-                                </b></i>
+                        <div class="text-end p-clamp">
+                            <i>
+                                <b> Итого: {{ 
+                                        order.items.reduce((acc: number, currentVal: any) => {
+                                            if (currentVal.forWeighing) {
+                                                return acc + currentVal.price * currentVal.count * currentVal.averageMassOfOne
+                                            }
+                                            return acc + currentVal.price * currentVal.count 
+                                        }, 0.0).toFixed(2)
+                                    }}₽
+                                </b>
+                            </i>
                         </div>
                     </div>
                 </div>

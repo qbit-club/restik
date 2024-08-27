@@ -10,7 +10,9 @@ export interface Order {
     price: number,
     count: number,
     menuItem: string,
-    images: string[]
+    images: string[],
+    forWeighing: boolean,
+    averageMassOfOne: number,
   }]
   date: string,
   rest: string,

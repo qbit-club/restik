@@ -55,8 +55,8 @@ export const useRest = defineStore('rest', () => {
   async function moveFoodItemToMenu(restId: string, foodListItemId: string): Promise<any> {
     return await RestApi.moveFoodItemToMenu({ restId, foodListItemId })
   }
-  async function updateMeal(restId: string, mealId: string, mealItem: FoodListItemFromDb | FoodListItem): Promise<any> {
-    return await RestApi.updateMeal(restId, mealId, mealItem)
+  async function updateMeal(restId: string, mealItem: FoodListItemFromDb | FoodListItem): Promise<any> {
+    return await RestApi.updateMeal(restId, mealItem)
   }
   // async function updateFoodListItemImages(restId: string, foodListItemId: string, fd:FormData): Promise<any> {
   //   return await RestApi.updateFoodListItemImages( restId, foodListItemId, fd)

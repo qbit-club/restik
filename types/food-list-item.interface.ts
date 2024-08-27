@@ -10,4 +10,6 @@ export interface FoodListItem {
     ingredients: string
   }
   price: string
+  forWeighing: boolean
+  averageMassOfOne: number
 }

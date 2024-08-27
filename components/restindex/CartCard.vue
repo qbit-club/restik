@@ -1,6 +1,6 @@
 <script setup lang="ts">
 useHead({
-  title: 'Глазов - есть!'
+  title: "Глазов - есть!",
 })
 import { toast } from "vue3-toastify"
 
@@ -33,7 +33,11 @@ let amount = computed(() => {
   for (let restItem of cart.value) {
     if (restItem.restInfo.alias == route.params.alias) {
       for (let item of restItem.items) {
-        res += item.count * item.price
+        if (!item.forWeighing) {
+          res += item.count * item.price
+        } else {
+          res += item.count * item.price * item.averageMassOfOne
+        }
       }
     }
   }
@@ -82,9 +86,9 @@ async function order() {
     let orderId = response.data.value.order._id
     let tmpId = orderId.slice(orderId.length - 5, orderId.length)
     toast(`Заказ №${tmpId} принят!`, {
-      type: 'success',
+      type: "success",
       autoClose: false,
-      toastId: orderId
+      toastId: orderId,
     })
     emit("buy")
   }
@@ -109,7 +113,7 @@ watch(address, (newAddress) => {
   <v-card class="py-5 px-6">
     <div class="cart-item" v-if="restItem?.restId">
       <div class="text-right">
-        <v-icon icon="mdi-close" class="cursor-pointer" color="accent"  @click="emit('close')"></v-icon>
+        <v-icon icon="mdi-close" class="cursor-pointer" color="accent" @click="emit('close')"></v-icon>
       </div>
 
       <v-row class="mb-3">
@@ -154,13 +158,21 @@ watch(address, (newAddress) => {
           <div class="info">
             <div class="name text-right">{{ item.name }}</div>
             <div lass="d-flex justify-space-between">
-              <div class="numbers">
+              <div v-if="!item.forWeighing" class="numbers">
                 <span style="font-weight: 300">{{ `${item.price} * ${item.count} = ` }}</span
                 >&nbsp;
 
                 <span style="font-weight: 600">{{ (item.count * item.price).toFixed(2) }}₽</span>&nbsp;
               </div>
-
+              <div v-else class="numbers">
+                <span style="font-weight: 300">{{
+                  `${item.price}₽ * ${item.count} шт * ${item.averageMassOfOne}кг = `
+                }}</span
+                >&nbsp;
+                
+                <span v-if="!item.forWeighing" style="font-weight: 600">{{ (item.count * item.price).toFixed(2) }}₽</span>&nbsp;
+                <span v-else style="font-weight: 600">{{ (item.count * item.price * item.averageMassOfOne).toFixed(2) }}₽</span>&nbsp;
+              </div>
               <div class="d-flex justify-end align-center ml-4">
                 <div class="cart-actions">
                   <div class="cart-plus-minus">

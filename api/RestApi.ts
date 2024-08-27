@@ -89,10 +89,9 @@ export default {
   },
   updateMeal(
     restId: string,
-    mealId: string,
     meal: FoodListItem
   ) {
-    return useApiFetch(`/rest/update-meal?rest_id=${restId}&meal_id=${mealId}`, {
+    return useApiFetch(`/rest/update-meal?rest_id=${restId}`, {
       method: 'PUT',
       body: { meal }
     })
