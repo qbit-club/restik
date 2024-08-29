@@ -44,6 +44,7 @@ watch(orderStatus, async (newStatus) => {
       </div>
       <div><v-icon icon="mdi-home-city-outline" class="mr-2"></v-icon>{{ order.user.address }}</div>
       <div><v-icon icon="mdi-paperclip" class="mr-2"></v-icon>{{ order.user.comment }}</div>
+      <div><v-icon icon="mdi-cash-register" class="mr-2"></v-icon>{{ order?.user.paymentType }}</div>
       <v-divider color="primary" :thickness="3" class="mt-2 pb-2" style="opacity: 1"></v-divider>
     </div>
 

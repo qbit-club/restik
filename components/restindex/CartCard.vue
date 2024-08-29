@@ -16,6 +16,7 @@ let name = ref<string>(localStorage.getItem("name") || userStore.user?.name || "
 let phone = ref<string>(localStorage.getItem("phone") ?? "")
 let address = ref<string>(localStorage.getItem("address") ?? "")
 let comment = ref<string>("")
+let paymentType = ref<string>("")
 
 function plusCart(itemId: string, restId: string) {
   let success = cartStore.plusCart(itemId, restId)
@@ -73,12 +74,20 @@ async function order() {
     })
     return
   }
+  if (paymentType.value == "") {
+    toast("Выберите способ оплаты", {
+      type: "warning",
+    })
+    return
+  }
   loading.value = true
   let response = await cartStore.order(String(route.params.alias), {
     name: name.value,
     phone: phone.value,
     address: address.value,
     comment: comment.value,
+    paymentType: paymentType.value
+
   })
   if (response.status.value == "success") {
     loading.value = false
@@ -108,30 +117,42 @@ watch(address, (newAddress) => {
     localStorage.setItem("address", newAddress)
   }
 })
+
+
 </script>
 <template>
-  <v-card class="py-5 px-6">
-    <div class="cart-item" v-if="restItem?.restId">
-      <div class="text-right">
-        <v-icon icon="mdi-close" class="cursor-pointer" color="accent" @click="emit('close')"></v-icon>
-      </div>
+  <v-card class="py-5 px-6 position-relative">
+    <div class="position-fixed top-0 left-0 pa-3  w-100 text-right">
+      <v-icon icon="mdi-close" variant="plain" color="accent" @click="emit('close')"></v-icon>
+    </div>
 
+
+
+    <div class="cart-item" v-if="restItem?.restId">
       <v-row class="mb-3">
-        <v-col cols="12" class="pb-1">
+        <v-col cols="12">
           <div class="caption">Имя</div>
           <v-text-field density="compact" variant="outlined" :hide-details="true" v-model="name"></v-text-field>
         </v-col>
-        <v-col cols="12" class="py-1">
+        <v-col cols="12" class="pb-0">
           <div class="caption">Телефон</div>
           <v-text-field density="compact" variant="outlined" :hide-details="true" v-model="phone"></v-text-field>
         </v-col>
-        <v-col cols="12" class="py-1">
+        <v-col cols="12" class="pb-0">
           <div class="caption">Адрес доставки / Столик</div>
           <v-text-field density="compact" variant="outlined" :hide-details="true" v-model="address"></v-text-field>
         </v-col>
-        <v-col cols="12" class="pt-1">
-          Комментарии
+        <v-col cols="12" class="pb-0">
+          <div class="caption"> Комментарии</div>
           <v-textarea variant="outlined" auto-grow rows="1" :hide-details="true" v-model="comment"></v-textarea>
+        </v-col>
+        <v-col cols="12" class="pb-0">
+          <div class="caption"> Оплата</div>
+          <v-radio-group inline v-model="paymentType">
+            <v-radio color="accent" label="Наличными" value="наличными"></v-radio>
+            <v-radio color="accent" label="Карточкой" value="карточкой"></v-radio>
+
+          </v-radio-group>
         </v-col>
       </v-row>
       <h3>{{ restItem.restInfo.title }}</h3>
@@ -159,36 +180,30 @@ watch(address, (newAddress) => {
             <div class="name text-right">{{ item.name }}</div>
             <div lass="d-flex justify-space-between">
               <div v-if="!item.forWeighing" class="numbers">
-                <span style="font-weight: 300">{{ `${item.price} * ${item.count} = ` }}</span
-                >&nbsp;
+                <span style="font-weight: 300">{{ `${item.price} * ${item.count} = ` }}</span>&nbsp;
 
                 <span style="font-weight: 600">{{ (item.count * item.price).toFixed(2) }}₽</span>&nbsp;
               </div>
               <div v-else class="numbers">
                 <span style="font-weight: 300">{{
-                  `${item.price}₽ * ${item.count} шт * ${item.averageMassOfOne}кг = `
-                }}</span
-                >&nbsp;
-                
-                <span v-if="!item.forWeighing" style="font-weight: 600">{{ (item.count * item.price).toFixed(2) }}₽</span>&nbsp;
-                <span v-else style="font-weight: 600">{{ (item.count * item.price * item.averageMassOfOne).toFixed(2) }}₽</span>&nbsp;
+        `${item.price}₽ * ${item.count} шт * ${item.averageMassOfOne}кг = `
+      }}</span>&nbsp;
+
+                <span v-if="!item.forWeighing" style="font-weight: 600">{{ (item.count * item.price).toFixed(2)
+                  }}₽</span>&nbsp;
+                <span v-else style="font-weight: 600">{{ (item.count * item.price * item.averageMassOfOne).toFixed(2)
+                  }}₽</span>&nbsp;
               </div>
               <div class="d-flex justify-end align-center ml-4">
                 <div class="cart-actions">
                   <div class="cart-plus-minus">
-                    <v-icon
-                      icon="mdi-minus"
-                      class="cursor-pointer"
-                      @click="minusCart(item.menuItemId, restItem.restId)"
-                    ></v-icon>
+                    <v-icon icon="mdi-minus" class="cursor-pointer"
+                      @click="minusCart(item.menuItemId, restItem.restId)"></v-icon>
                     <div class="cart-count">
                       {{ item.count }}
                     </div>
-                    <v-icon
-                      icon="mdi-plus"
-                      class="cursor-pointer"
-                      @click="plusCart(item.menuItemId, restItem.restId)"
-                    ></v-icon>
+                    <v-icon icon="mdi-plus" class="cursor-pointer"
+                      @click="plusCart(item.menuItemId, restItem.restId)"></v-icon>
                   </div>
                 </div>
               </div>
@@ -200,7 +215,7 @@ watch(address, (newAddress) => {
     </div>
 
     <div v-else class="pb-6 text-center" style="font-weight: 600">
-      <v-icon icon="mdi-close" color="accent" class="cursor-pointer float-right" @click="emit('close')"></v-icon>
+  
       в корзине пусто
     </div>
 
@@ -218,6 +233,7 @@ watch(address, (newAddress) => {
 .cart-item {
   margin-bottom: 38px;
   width: 100%;
+
 
   .item {
     display: flex;
