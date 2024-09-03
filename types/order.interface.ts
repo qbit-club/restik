@@ -10,7 +10,9 @@ export interface Order {
     price: number,
     count: number,
     menuItem: string,
-    images: string[]
+    images: string[],
+    forWeighing: boolean,
+    averageMassOfOne: number,
   }]
   date: string,
   rest: string,
@@ -19,6 +21,7 @@ export interface Order {
     phone: string,
     address: string,
     comment: string,
+    paymentType: string,
     _id: string | undefined
   },
   status: StatusEnum,

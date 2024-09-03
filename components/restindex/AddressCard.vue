@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type { RestFromDb } from "~/types/rest-from-db.interface"
-
-useHead({
-  title: "Глазов - есть!",
-})
 const props = defineProps<{
   rest: RestFromDb
 }>()
+useHead({
+  title: props.rest.title,
+})
+
 </script>
 <template>
   <v-container>
@@ -18,7 +18,10 @@ const props = defineProps<{
             {{ props.rest.location.name }}
           </a>
         </div>
-        <Map :location="props.rest.location"></Map>
+        <div style="aspect-ratio: 2.5;">
+          <Map :location="props.rest.location"></Map>
+        </div>
+
       </v-col>
     </v-row>
   </v-container>

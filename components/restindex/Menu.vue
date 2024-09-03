@@ -113,7 +113,11 @@ let cartAmount = computed(() => {
     for (let restItem of cartStore?.cart) {
         if (restItem.restInfo.alias == route.params.alias) {
             for (let item of restItem.items) {
-                res += item.count * item.price
+                if (!item.forWeighing) {
+                    res += item.count * item.price
+                } else {
+                    res += item.count * item.price * item.averageMassOfOne
+                }
             }
         }
     }

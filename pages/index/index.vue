@@ -82,12 +82,13 @@ getRests()
     </v-col>
     <v-col v-else cols="6" md="4" lg="3" v-for="rest, index in restsWithFilter" :key="index">
         <NuxtLink :to="`/${rest?.alias}`">
+        
             <div class="h-100 d-flex flex-column justify-space-between">
                 <p v-if="rest.type" class="text-center p-clamp font-weight-light">{{ rest.type.toLowerCase() }}</p>
                 <v-divider v-if="rest.type" width="50%" style="margin-left: auto; margin-right: auto;"></v-divider>
             
                 <h3 class="text-center h3-clamp">{{ rest.title }}</h3>
-                <v-img :src="rest.images?.logo" class="w-100 rounded-lg"></v-img>
+                <v-img :src="rest.images?.logo" class="w-100 rounded-lg" aspect-ratio="1"  cover></v-img>
                 <div class="d-flex justify-center">
                     <v-rating v-model="rest.rating" color="yellow-accent-4" size="12" style="font-size:10px;"
                         half-increments :readonly="true" v-if="rest.rating"></v-rating>
