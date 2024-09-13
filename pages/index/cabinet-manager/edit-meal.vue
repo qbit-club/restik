@@ -4,7 +4,7 @@ import type { FoodListItemFromDb } from "~/types/food-list-item-from-db.interfac
 
 // meta
 useHead({
-  title: "Редактировать меню",
+  title: "Редактировать товар",
 });
 definePageMeta({
   middleware: "auth",
@@ -144,7 +144,7 @@ async function submit() {
 
           <v-row class="mb-16">
             <v-col cols="12">
-              <h3>Редактировать блюдо</h3>
+              <h3>Редактировать</h3>
             </v-col>
 
             <v-col cols="12" class="d-flex justify-space-between align-center">

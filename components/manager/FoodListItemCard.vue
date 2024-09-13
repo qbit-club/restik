@@ -38,7 +38,7 @@ onMounted(() => {
       <img :src="item?.images[0]" style="height: 50px;" aspect-ratio="1"></img>
       <div class="pa-4 ">
         <span class="font-weight-bold">{{ item.category }}</span>
-        <div> {{ item.name }} {{ item.price }} ₽</div>
+        <div> {{ item.name }} | {{item.health.mass}} | {{ item.price }} ₽</div>
       </div>
     </v-col>
     <v-col cols="12" md="4" class="pa-0">
@@ -60,8 +60,8 @@ onMounted(() => {
           </div>
           <div class="d-flex align-center pa-2">
             <v-checkbox v-model="isMenuItem" hide-details class="pa-0"></v-checkbox>
-            <div class="text-center text-uppercase" v-if="isMenuItem">в меню</div>
-            <div class="text-center text-uppercase" v-else> нет в меню</div>
+            <div class="text-center text-uppercase" v-if="isMenuItem">в продаже</div>
+            <div class="text-center text-uppercase" v-else> спрятано</div>
 
           </div>
           <v-dialog v-model="confirmDeleteDialog" max-width="300" persistent>

@@ -45,7 +45,7 @@ const { meta, handleSubmit, setValues, validate } = useForm({
   },
   validationSchema: {
     title(value: string) {
-      if (value?.trim().length < 4) return "слишком короткий заголовок"
+      if (value?.trim().length < 2) return "слишком короткий заголовок"
       if (value?.length > 32) return "слишком длинный заголовок"
 
       return true
@@ -185,7 +185,7 @@ watch(locationSearchRequest, async (value: any) => {
       <v-row class="justify-center pb-16">
         <v-col :cols="12" sm="10" class="pa-0">
           <v-form @submit.prevent="submit">
-            <div class="font-weight-bold text-center" style="font-size: 20px">Редактировать ресторан</div>
+            <div class="font-weight-bold text-center" style="font-size: 20px">Редактировать</div>
             <v-row>
               <v-col cols="12">
                 <div class="label">Название</div>

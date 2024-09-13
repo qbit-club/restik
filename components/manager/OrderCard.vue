@@ -47,7 +47,6 @@ watch(orderStatus, async (newStatus) => {
       <div><v-icon icon="mdi-cash-register" class="mr-2"></v-icon>{{ order?.user.paymentType }}</div>
       <v-divider color="primary" :thickness="3" class="mt-2 pb-2" style="opacity: 1"></v-divider>
     </div>
-
     <div v-for="(item, j) in order.items" class="d-flex justify-space-between">
       <span>{{ item.menuItem }}</span>
       <span v-if="!item.forWeighing"

@@ -70,13 +70,17 @@ function uploadImage(file: File) {
       if (this.width / this.height >= 1.1 || this.width / this.height <= 0.9) {
         toast('Картинка должна быть "более" квадратной', { type: "error" })
       } else {
+         // Очищаем предыдущие данные и добавляем новое изображение
+         imagesFormData.delete("menuitemimage");
         imagesFormData.set(
-          "menuitemimage_" + String(index) + `_${managingRest.value}`,
+          "menuitemimage",
           file,
-          "menuitemimage_" + String(index) + `_${managingRest.value}` + "_" + String(Date.now()) + ".jpg"
-        )
-        previews.value.push(String(reader.result))
-        index += 1
+          "menuitemimage_" + String(Date.now()) + ".jpg"
+        );
+
+        // Очищаем предыдущий предварительный просмотр и добавляем новый
+        previews.value = [String(reader.result)];
+      
       }
     }
   }
@@ -101,7 +105,7 @@ async function submit() {
     let uploadRes = await restStore.uploadFoodListItemImages(restId, itemId, imagesFormData)
     if (uploadRes.status.value == "success") {
       loading.value = false
-      toast("Блюдо создано!", {
+      toast("Товар создан!", {
         type: "success",
         onClose: () => router.push("/cabinet-manager/manage-menu"),
       })
@@ -115,7 +119,7 @@ async function submit() {
       <v-col :cols="12" sm="10" class="pa-0">
         <v-row>
           <v-col cols="12">
-            <h3 class="text-center">Создать блюдо</h3>
+            <h3 class="text-center">Создать</h3>
           </v-col>
           <v-col cols="12" class="d-flex justify-space-between align-center">
             <MenuItemImageInput @upload-menu-item-image="uploadImage" />

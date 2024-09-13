@@ -3,7 +3,7 @@ import type { RestFromDb } from '~/types/rest-from-db.interface';
 
 // meta
 useHead({
-  title: "Редактировать ресторан",
+  title: "Редактировать",
 });
 definePageMeta({
   middleware: "auth",
