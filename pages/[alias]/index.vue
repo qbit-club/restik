@@ -88,7 +88,9 @@ rest.value = res.data.value
                 </div>
               </NuxtLink>
             </v-col>
-            <v-col :cols="12" class="ma-0 pa-0">
+            <v-col :cols="12" class="ma-0 pa-0 mt-8">
+              <p class="text-center p-clamp font-weight-light">{{ rest?.type.toLowerCase() }}</p>
+                <v-divider  width="30%" style="margin-left: auto; margin-right: auto;"></v-divider>
               <div class="title">{{ rest?.title }}</div>
 
             </v-col>
@@ -161,7 +163,6 @@ rest.value = res.data.value
 
 .title {
   font-size: clamp(1rem, 0.2rem + 3.2vw, 2rem);
-  margin-top: 20px;
   font-weight: 700;
   text-align: center;
   text-transform: uppercase;
