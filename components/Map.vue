@@ -34,7 +34,7 @@ onMounted(() => {
 
   // Создание точки с заданными координатами
   const pointFeature = new Feature({
-    geometry: new Point(fromLonLat([props.location.geo_lon, props.location.geo_lat])),
+    geometry: new Point(fromLonLat([Number(props.location.geo_lon), Number(props.location.geo_lat)])),
   });
 
   // Установка стиля для точки
