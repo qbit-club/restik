@@ -23,8 +23,8 @@ let restUrl = computed(() => {
   return runtimeConfig.public.siteUrl + '/' + rest.value?.alias
 })
 let stripHtml = computed(() => {
-      return rest.value?.description.replace(/<[^>]*>/g, ''); // Удаляет все HTML-теги из строки  
-  })
+  return rest.value?.description.replace(/<[^>]*>/g, ''); // Удаляет все HTML-теги из строки  
+})
 const options = ref({
   url: restUrl.value,
 })
@@ -60,10 +60,12 @@ rest.value = res.data.value
   <ClientOnly>
     <v-container>
       <v-row class="d-flex justify-center pb-16">
+
         <v-col :cols="12">
           <v-row>
             <v-col :cols="12" style="position: relative;" class="pa-0">
-              <a :href="`tel:${rest?.phone}`"> <span class="phone p-clamp pa-1 pa-sm-2 pa-md-3"> <v-icon icon="mdi-cellphone" /> {{ rest?.phone }}
+              <a :href="`tel:${rest?.phone}`"> <span class="phone p-clamp pa-1 pa-sm-2 pa-md-3"> <v-icon
+                    icon="mdi-cellphone" /> {{ rest?.phone }}
                 </span></a>
               <div class="vk">
                 <a :href="rest?.socialMedia" target="_blank">
@@ -90,11 +92,15 @@ rest.value = res.data.value
             </v-col>
             <v-col :cols="12" class="ma-0 pa-0 mt-8">
               <p class="text-center p-clamp font-weight-light">{{ rest?.type.toLowerCase() }}</p>
-                <v-divider  width="30%" style="margin-left: auto; margin-right: auto;"></v-divider>
+              <v-divider width="30%" style="margin-left: auto; margin-right: auto;"></v-divider>
               <div class="title">{{ rest?.title }}</div>
 
             </v-col>
-            <v-col :cols="12" class="pb-0">
+            <v-col cols="12" v-if="rest?.isHidden">
+              <div class="text-center"> Сейчас мы закрыты</div>
+             
+            </v-col>
+            <v-col :cols="12" class="pb-0" v-if="!rest?.isHidden">
 
               <v-btn-toggle v-model="activMenu" color="secondary" style="height:60px" class="d-flex overflow-x-auto">
                 <v-btn @click="currentTab = Menu" size="x-large">
@@ -132,7 +138,7 @@ rest.value = res.data.value
               </v-btn-toggle>
 
             </v-col>
-            <component :is="currentTab" :rest="rest"></component>
+            <component :is="currentTab" :rest="rest" v-if="!rest?.isHidden"></component>
           </v-row>
         </v-col>
       </v-row>
@@ -172,7 +178,7 @@ rest.value = res.data.value
   background: rgba(256, 256, 256, 0.9);
   font-weight: 600;
   color: black;
- 
+
   border-radius: 5px;
   position: absolute;
   right: 25px;
