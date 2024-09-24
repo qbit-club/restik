@@ -139,7 +139,7 @@ watch(address, (newAddress) => {
           <v-text-field density="compact" variant="outlined" :hide-details="true" v-model="phone"></v-text-field>
         </v-col>
         <v-col cols="12" class="pb-0">
-          <div class="caption">Адрес доставки / Столик</div>
+          <div class="caption">Адрес доставки</div>
           <v-text-field density="compact" variant="outlined" :hide-details="true" v-model="address"></v-text-field>
         </v-col>
         <v-col cols="12" class="pb-0">

@@ -52,6 +52,16 @@ setManagingRest()
             </div>
           </v-btn>
         </div>
+        <div>
+          <v-btn size="x-large" :to="`/${managingRestObject.alias}`" variant="text">
+            <div class="d-flex flex-column align-center">
+              <v-icon icon="mdi-store-outline" size="x-large" />
+              <div class="explanation text-center">
+              в магазин
+              </div>
+            </div>
+          </v-btn>
+        </div>
 
       </v-col>
       <v-col :cols="12" class="d-flex overflow-x-auto">
