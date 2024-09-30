@@ -244,7 +244,7 @@ async function submit() {
             </v-card>
           </v-col>
             <v-col cols="12">
-              Состав
+              Описание
               <v-textarea auto-grow hide-details :rows="1" v-model="form.health.ingredients" density="compact"
                 variant="outlined"
                 placeholder="Из слабосолёного лосося, с тартаром из огурцов, красной икрой, укропом, луком шнитт и шалот"></v-textarea>
