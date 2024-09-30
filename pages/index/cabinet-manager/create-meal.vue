@@ -247,7 +247,7 @@ async function submit() {
           </v-col>
 
           <v-col cols="12">
-            Состав
+            Описание
             <v-textarea
               auto-grow
               hide-details
