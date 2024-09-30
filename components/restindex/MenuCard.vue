@@ -9,7 +9,7 @@ let { meal, rest } = defineProps<{
 
 const cartStore = useCart()
 
-
+let dialog = ref(false)
 let price = parseFloat(meal.price)
 // количество порций в корзине
 let mealCartCount = computed(() => {
@@ -50,7 +50,7 @@ function minusCart() {
         {{ meal.health.carb }}г </div>
     <v-card class="w-100 meal-card d-flex">
         <div class="w-100 ">
-            <v-img :src="meal.images[0]" class="ml-1 mt-1" v-if="meal.images[0]">
+            <v-img :src="meal.images[0]" class="ml-1 mt-1" v-if="meal.images[0]" @click="dialog = true">
             </v-img>
 
         </div>
@@ -58,11 +58,11 @@ function minusCart() {
         <div class="w-100 pa-2 d-flex flex-column justify-space-between">
             <div>
                 <div v-if="meal.health.energy !== '0 ккал'" class="text-caption text-right font-weight-medium">{{
-        meal.health.energy }}/100г</div>
+                    meal.health.energy }}/100г</div>
                 <div v-if="meal.health.mass && !meal.forWeighing" class="text-caption text-right font-weight-medium">{{
-        meal.health.mass }}</div>
+                    meal.health.mass }}</div>
                 <div v-if="meal.forWeighing" class="text-caption text-right font-weight-medium">1 шт ≈ {{
-        meal.averageMassOfOne }} кг</div>
+                    meal.averageMassOfOne }} кг</div>
 
             </div>
 
@@ -99,6 +99,19 @@ function minusCart() {
         </div>
     </v-card>
     <div class="ingredients font-weight-medium">{{ meal.health.ingredients }}</div>
+    <v-dialog v-model="dialog" max-width="600" opacity="0.8">
+
+     
+           
+     
+        <v-img :src="meal.images[0]" class="text-right"  v-if="meal.images[0]" @click="dialog = false">
+            <v-btn icon="mdi-close" variant="plain" @click="dialog = false" color="accent"> </v-btn>
+        </v-img>
+
+
+
+
+    </v-dialog>
 </template>
 
 <style scoped lang="scss">
