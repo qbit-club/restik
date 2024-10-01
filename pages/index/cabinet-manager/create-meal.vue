@@ -131,7 +131,7 @@ async function submit() {
           </v-col>
           <v-col cols="12" md="6">
             Категория
-            <v-select
+            <v-autocomplete
               hide-details
               v-model="form.category"
               :items="CATEGORIES"
@@ -139,7 +139,7 @@ async function submit() {
               variant="outlined"
               density="compact"
               clearable
-            ></v-select>
+            ></v-autocomplete>
           </v-col>
           <v-col cols="12" md="3" class="d-flex flex-column justify-end">
             Белки
@@ -210,7 +210,7 @@ async function submit() {
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" md="6">
-                  Масса 1 шт
+                  Масса/характеристика
                   <v-text-field
                     hide-details
                     v-model="form.health.mass"
