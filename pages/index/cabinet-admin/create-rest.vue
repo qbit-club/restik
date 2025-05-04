@@ -14,8 +14,6 @@ definePageMeta({
 })
 const config = useRuntimeConfig()
 
-
-
 // other imports
 import { useField, useForm } from 'vee-validate'
 
@@ -72,7 +70,8 @@ const { meta, handleSubmit, validate } = useForm({
       return true
     },
     phone(value: string) {
-      let regexp = /^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/g
+      // let regexp = /^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/g
+      let regexp = /(\+?\d{1,3})?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4}/
       if (!regexp.test(value?.trim())) return 'неправильный формат'
 
       return true
@@ -88,7 +87,7 @@ const { meta, handleSubmit, validate } = useForm({
 })
 
 let title = useField<string>('title')
-  let type = useField<string>('type')
+let type = useField<string>('type')
 let alias = useField<string>('alias')
 let phone = useField<string>('phone')
 let socialMedia = useField<string>('socialMedia')
@@ -185,6 +184,45 @@ const submit = handleSubmit(async values => {
   }
 })
 
+const options = reactive({
+    theme: 'snow',
+    modules: {
+        clipboard: {
+            allowed: {
+                tags: ['a', 'b', 'strong', 'u', 's', 'i', 'p', 'br', 'ul', 'ol', 'li', 'span'],
+                attributes: ['href', 'rel', 'target', 'class']
+            },
+            customButtons: [
+                {
+                    module: 'quillEmbeds',
+                    allowedTags: ['embed'],
+                    allowedAttr: ['width', 'height'],
+                }
+            ],
+            keepSelection: true,
+            substituteBlockElements: true,
+            magicPasteLinks: true,
+            hooks: {
+                uponSanitizeElement(node:any, data:any, config:any) {
+                    console.log(node);
+                },
+            },
+        },
+    },
+})
+function onReady(editor:any) {
+      const quill = editor.getEditor()
+      quill.clipboard.addMatcher('text/html', (node:any, utils:any) => {
+        const text = utils.getText()
+        // clean styles
+        const cleanContent = text.replace(/(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)([^\s]+(.*)?)/g, '')
+          .replace(/background:.*/g, '')
+          .replace(/color:.*/g, '')
+          .replace(/box-shadow:.*/g, '')
+
+        return utils.createHTML(cleanContent)
+      })
+    }
 
 watch(locationSearchRequest, async (value) => {
   const locations: any = await getPossibleLocations(value); // any - костыль надо переписать dadata.ts
@@ -245,7 +283,9 @@ watch(locationSearchRequest, async (value) => {
                 <div class="label">Описание</div>
                 <div class="editor-container">
                   <QuillEditor theme="snow" v-model:content="description" contentType="html"
-                    :toolbar="[['bold', 'italic', 'underline'], [{ 'list': 'ordered' }, { 'list': 'bullet' }], ['clean']]" />
+                    :toolbar="[['bold', 'italic', 'underline'], [{ 'list': 'ordered' }, { 'list': 'bullet' }], ['clean']]"
+                    :options="options"
+                    />
                 </div>
               </v-col>
 
