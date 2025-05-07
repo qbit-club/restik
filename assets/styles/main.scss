@@ -1,4 +1,4 @@
-@import "./animations.scss";
+@use "./animations.scss";
 @import "../../node_modules/ol/ol.css";
 
 @font-face {
@@ -35,4 +35,22 @@ a {
 }
 .h3-clamp {
   font-size: clamp(0.875rem, 0.675rem + 0.8vw, 1.125rem);
+}
+
+.custom-top-drawer {
+  height: 100vh !important;
+  max-height: 100vh !important;
+  width: 100vw !important;
+  transform: translateY(-100%) !important; /* чтобы скрыть полностью */
+  transition: transform 0.3s ease;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 3000;
+  background-color: white;
+}
+
+/* Когда drawer открыт (Vuetify добавляет класс v-navigation-drawer--active) */
+.custom-top-drawer.v-navigation-drawer--active {
+  transform: translateY(0%) !important;
 }

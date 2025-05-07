@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, onMounted, defineProps } from 'vue';
+import { ref, onMounted } from 'vue';
 import Map from "ol/Map.js";
 import View from "ol/View.js";
 import TileLayer from "ol/layer/Tile.js";

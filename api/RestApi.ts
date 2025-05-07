@@ -21,6 +21,9 @@ export default {
   getRestsName(): Promise<any> {
     return useApiFetch('/rest/rests-name', { method: 'GET' })
   },
+  getRestsAlias(): Promise<any> {
+    return useApiFetch('/rest/rests-alias', { method: 'GET' })
+  },
 
   getManagersOfRest(rest_id: string): Promise<any> {
     return useApiFetch(`/rest/get-managers?rest_id=${rest_id}`, { method: 'GET' })
