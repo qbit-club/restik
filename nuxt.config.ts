@@ -57,7 +57,7 @@ export default defineNuxtConfig({
   },
  
   sitemap: {
-    siteUrl: process.env.NUXT_PUBLIC_SITE_URL,
+    
     autoLastmod: true,
     exclude: [
       "/cabinet-user/",

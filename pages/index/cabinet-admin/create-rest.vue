@@ -136,18 +136,8 @@ function uploadHeaderImage(file: File) {
   reader.readAsDataURL(file);
 }
 
-// base64 img
-let hallImagePreviews = ref<string[]>([])
-function uploadHallImage(file: File, index: Number) {
-  // example filename: headerimage_0_216262666_best-burger.svg
-  imagesFormData.set('hallimage_' + String(index), file, 'hallimage_' + String(index) + '_' + String(Date.now()) + '_' + String(alias.value.value) + '.svg')
-  // make a preview
-  let reader = new FileReader();
-  reader.onloadend = function () {
-    hallImagePreviews.value.push(String(reader.result))
-  }
-  reader.readAsDataURL(file);
-}
+
+
 const submit = handleSubmit(async values => {
   if (!logoPreview.value || !headerImagePreview.value) {
 
@@ -171,8 +161,9 @@ const submit = handleSubmit(async values => {
 
   if (res.status.value == 'success') {
     let _id = res.data.value._id
+    console.log(_id)
     let uplRes = await restStore.uploadImages(imagesFormData, _id)
-
+    console.log(uplRes)
     if (uplRes.status.value == 'success') {
       router.push('/')
     } else {
