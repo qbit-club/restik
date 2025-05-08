@@ -21,6 +21,9 @@ export default {
   getRestsName(): Promise<any> {
     return useApiFetch('/rest/rests-name', { method: 'GET' })
   },
+  getRestsAlias(): Promise<any> {
+    return useApiFetch('/rest/rests-alias', { method: 'GET' })
+  },
 
   getManagersOfRest(rest_id: string): Promise<any> {
     return useApiFetch(`/rest/get-managers?rest_id=${rest_id}`, { method: 'GET' })
@@ -54,7 +57,7 @@ export default {
     })
   },
   uploadImages(formData: FormData, _id: string): Promise<any> {
-    return useApiFetch(`/rest/images?rest_id=${_id}`, { method: 'POST', headers: { 'Content-Type': 'multipart/form-data' }, body: formData })
+    return useApiFetch(`/rest/images?rest_id=${_id}`, { method: 'POST', body: formData, key: `upload-header-${Date.now()}` })
   },
   sendFoodListItemToMenu(_id: string, restId: string): Promise<any> {
     return useApiFetch('/rest/menu', {
@@ -76,7 +79,7 @@ export default {
   },
 
   uploadFoodListItemImages(restId: string, foodListItemId: string, fd: FormData): Promise<any> {
-    return useApiFetch(`/rest/food-list-images?rest_id=${restId}&item_id=${foodListItemId}`, { method: 'POST', headers: { 'Content-Type': 'multipart/form-data' }, body: fd })
+    return useApiFetch(`/rest/food-list-images?rest_id=${restId}&item_id=${foodListItemId}`, { method: 'POST', body: fd, key: `upload-header-${Date.now()}` })
   },
   moveFoodItemToMenu(body: {
     restId: string,

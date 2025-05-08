@@ -41,8 +41,8 @@ async function logout() {
       </div>
 
       <ClientOnly>
-        <v-navigation-drawer :model-value="navigationDrawer" location="top" :mobile="false" elevation="0" :scrim="false"
-          temporary class="w-100" style="min-height: 100dvh">
+        <v-navigation-drawer v-model="navigationDrawer" location="top" :mobile="false" elevation="0" temporary
+          class="custom-top-drawer">
           <v-container>
             <v-row class="justify-center">
               <v-col cols="12" md="6" class="d-flex justify-space-between align-center">
@@ -89,17 +89,25 @@ async function logout() {
                   <v-list-item @click="router.push('/login')" prepend-icon="mdi-login" v-else>
                     <div style="font-size: 0.8rem; font-weight: 500">Войти</div>
                   </v-list-item>
+                  <v-list-item>
+                    <div class="d-flex justify-center align-center" style="font-size: 0.8rem; font-weight: 900">Пишите в телеграм <a href="https://t.me/grachevrv" target="_blank"> 
+                      <img class="ma-2" src="~/assets/icons/telegram.svg" alt="Изображение не загрузилось"></a></div>
+
+                   
+                  </v-list-item>
+
+
                 </v-list>
               </v-col>
-              <v-col cols="12" class="d-flex justify-center">
+              <!-- <v-col cols="12" class="d-flex justify-center">
                 <img src="~/assets/icons/kvak.gif" alt="">
-              </v-col>
+              </v-col> -->
             </v-row>
           </v-container>
         </v-navigation-drawer>
       </ClientOnly>
 
-      <v-main class="main" style="min-height: 100%;">
+      <v-main>
         <!-- pages go here -->
         <NuxtPage />
         <!-- pages go here -->
@@ -153,5 +161,6 @@ async function logout() {
 .footer {
   background: rgb(84, 185, 117);
   background: radial-gradient(circle, rgba(84, 185, 117, 1) 0%, rgba(250, 178, 50, 1) 0%, rgba(84, 185, 117, 1) 100%);
+  max-height: 110px;
 }
 </style>

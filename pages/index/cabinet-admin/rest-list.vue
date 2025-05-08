@@ -84,8 +84,8 @@ getRestList();
           :class="[rest.isHidden ? 'out-menu' : '']">
           <v-row class="d-flex justify-space-between flex-wrap">
             <v-col cols="12" md="6" class="d-flex align-center cursor-pointer" @click="router.push(`/${rest.alias}`)">
-              <div style="width: 50px">
-                <v-img :src="rest.images.logo"></v-img>
+              <div style="width: 50px" v-if='rest.images?.logo'>
+                <v-img :src="rest.images?.logo"></v-img>
               </div>
               <h4 class="ml-4">{{ rest.title }}</h4>
             </v-col>
