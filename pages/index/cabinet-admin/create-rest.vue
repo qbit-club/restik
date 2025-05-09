@@ -100,12 +100,15 @@ const locationSearchRequest = ref<string>('');
 const possibleLocations = ref<Location[] | undefined>(undefined);
 
 let locationToSend = computed(() => {
+
   if (location.value) {
+
     location.value.type = 'Point'
     location.value.coordinates = [
-      Number(location.value.geo_lat),
-      Number(location.value.geo_lon)
+      Number(location.value.geo.geo_lat),
+      Number(location.value.geo.geo_lon)
     ]
+    console.log(location)
     return location.value
   }
 })
@@ -139,6 +142,7 @@ function uploadHeaderImage(file: File) {
 
 
 const submit = handleSubmit(async values => {
+
   if (!logoPreview.value || !headerImagePreview.value) {
 
     toast('Добавьте фото!', { type: 'warning' })
@@ -161,9 +165,9 @@ const submit = handleSubmit(async values => {
 
   if (res.status.value == 'success') {
     let _id = res.data.value._id
-    console.log(_id)
+
     let uplRes = await restStore.uploadImages(imagesFormData, _id)
-    console.log(uplRes)
+
     if (uplRes.status.value == 'success') {
       router.push('/')
     } else {
@@ -281,14 +285,16 @@ watch(locationSearchRequest, async (value) => {
               </v-col>
 
               <v-col cols="12">
-                <v-autocomplete hide-details density="compact" v-model="location" v-model:search="locationSearchRequest"
+                {{ location }}
+                <v-combobox hide-details density="compact" v-model="location" v-model:search="locationSearchRequest"
                   :items="possibleLocations" item-title="name" placeholder="Место" item-value="geo" variant="outlined"
                   clearable>
                   <template v-slot:no-data>
                     <div class="pt-2 pr-4 pb-2 pl-4">
                       {{ locationSearchRequest.trim().length < 3 ? "Минимум 3 символа" : "Не найдено" }} </div>
                   </template>
-                </v-autocomplete>
+                </v-combobox>
+              
               </v-col>
 
 

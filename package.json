@@ -21,7 +21,7 @@
     "@vueup/vue-quill": "^1.2.0",
     "@vueuse/core": "^13.1.0",
     "lodash": "^4.17.21",
-    "nuxt": "^3.16.2",
+    "nuxt": "^3.17.2",
     "ol": "^10.5.0",
     "ol-contextmenu": "^5.5.0",
     "ol-ext": "^4.0.31",
@@ -37,6 +37,6 @@
   "devDependencies": {
     "@types/lodash": "^4.17.16",
     "vite-plugin-vuetify": "^2.1.1",
-    "vuetify": "^3.8.3"
+    "vuetify": "^3.8.4"
   }
 }

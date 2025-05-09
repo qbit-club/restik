@@ -5,7 +5,6 @@ import vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
 export default defineNuxtConfig({
   css: ["~/assets/styles/main.scss"],
   devtools: { enabled: true },
-
   build: {
     transpile: ["vuetify"],
   },
@@ -75,10 +74,10 @@ export default defineNuxtConfig({
   },
 
   pwa: {
-    workbox: {
-      globPatterns: ["**/*.{js,css,html,png,jpg,svg}"], // Removed **/_payload.json
-      globIgnores: ["**/node_modules/**/*", "sw.js", "workbox-*.js"],
-    },
+    // workbox: {
+    //   globPatterns: ["**/*.{js,css,html,png,jpg,svg}"], // Removed **/_payload.json
+    //   globIgnores: ["**/node_modules/**/*", "sw.js", "workbox-*.js"],
+    // },
     registerType: "autoUpdate",
     includeAssets: [
       "favicon.svg",
@@ -121,6 +120,9 @@ export default defineNuxtConfig({
   },
 
   vite: {
+    ssr: {
+      noExternal: ['vue-router', 'entities']
+    },
     vue: {
       template: {
         transformAssetUrls,
@@ -134,3 +136,4 @@ export default defineNuxtConfig({
 
   compatibilityDate: "2024-07-27",
 });
+
