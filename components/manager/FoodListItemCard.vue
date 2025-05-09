@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { FoodListItemFromDb } from '@/types/food-list-item-from-db.interface'
-
+import {mdiTrashCanOutline, mdiPencil}  from '@mdi/js';
 const props = defineProps<{
   item: FoodListItemFromDb
   inMenu: boolean | undefined
@@ -48,13 +48,13 @@ onMounted(() => {
 
           <div class="d-flex flex-column align-center pa-2 "
             @click="router.push(`/cabinet-manager/edit-meal?item_id=${item._id}`)">
-            <v-icon icon="mdi-pencil" size="x-large" />
+            <v-icon :icon="mdiPencil" size="x-large" />
             <div class="explanation text-center">редактировать</div>
 
           </div>
-
+         
           <div class="d-flex flex-column align-center pa-2" @click="confirmDeleteDialog = true">
-            <v-icon icon="mdi-trash-can-outline" size="x-large" />
+            <v-icon :icon="mdiTrashCanOutline" size="x-large" />
             <div class="explanation text-center">удалить</div>
 
           </div>

@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import {mdiCartOutline, mdiCloseCircle, mdiMagnify }  from '@mdi/js';
+
 import MenuCard from './MenuCard.vue'
 import CartCard from './CartCard.vue'
-
 import { OrdersSocketAPI } from '~/api/OrdersSocketAPI'
 import { useElementBounding } from '@vueuse/core'
 
@@ -165,7 +166,7 @@ onMounted(() => {
 
                     <div class="d-flex flex-column align-center" style="min-width:60px" @click="cartDialog = true">
                         <v-badge :content="cartLength" color="accent">
-                            <v-btn icon="mdi-cart-outline" density="comfortable">
+                            <v-btn :icon="mdiCartOutline" density="comfortable">
                             </v-btn>
                         </v-badge>
 
@@ -179,9 +180,9 @@ onMounted(() => {
                         <transition name="fade">
                             <v-text-field min-width="200" v-model="filter" v-if="isShow" density="compact"
                                 variant="solo" hide-details single-line placeholder="поиск"
-                                clear-icon="mdi-close-circle" clearable></v-text-field>
+                                :clear-icon="mdiCloseCircle" clearable></v-text-field>
                         </transition>
-                        <v-btn icon="mdi-magnify" density="comfortable" @click="showSearch" class="ml-2">
+                        <v-btn :icon="mdiMagnify" density="comfortable" @click="showSearch" class="ml-2">
 
                         </v-btn>
                     </div>

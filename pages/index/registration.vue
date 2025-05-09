@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { mdiEye, mdiEyeOff } from '@mdi/js';
 import { useRouter } from 'vue-router'
-import BackButton from '../components/BackButton.vue'
 import { useField, useForm } from 'vee-validate'
 
 import _ from 'lodash'
@@ -108,7 +108,7 @@ const submit = handleSubmit(async values => {
           <v-text-field 
             label="Пароль"
             v-model="password.value.value"
-            :append-inner-icon="show_password ? 'mdi-eye' : 'mdi-eye-off'"
+            :append-inner-icon="show_password ? mdiEye : mdiEyeOff"
             @click:append-inner="show_password = !show_password"
             :type="show_password ? 'text' : 'password'"
             :error-messages="password.errorMessage.value"

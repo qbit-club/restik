@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { FoodListItemFromDb } from '@/types/food-list-item-from-db.interface'
-
+import {mdiChevronDown}  from '@mdi/js';
 defineProps<{
   item: FoodListItemFromDb
 }>()
@@ -20,10 +20,10 @@ const emit = defineEmits(['deleteFromMenu'])
   
   
       <v-btn variant="flat" rounded type="primary" size="small" @click="emit('deleteFromMenu', item._id)">
-        <v-icon icon="mdi-chevron-down" style="font-size: 24px;"></v-icon>
+        <v-icon :icon="mdiChevronDown" style="font-size: 24px;"></v-icon>
       </v-btn>
 
-
+     
   </div>
 </template>
 <style scoped lang="scss">

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { mdiStoreOutline, mdiCartCheck, mdiFoodOutline, mdiEyeOffOutline, mdiEyeOutline, mdiBowlMixOutline, mdiTuneVariant,mdiAccountPlusOutline,mdiEmailFastOutline, } from '@mdi/js';
 definePageMeta({
   middleware: "is-manager",
 });
@@ -45,7 +46,7 @@ setManagingRest()
         <div>
           <v-btn size="x-large" @click="hideRest" variant="text">
             <div class="d-flex flex-column align-center">
-              <v-icon :icon="managingRestObject?.isHidden ? 'mdi-eye-off-outline' : 'mdi-eye-outline'" size="x-large" />
+              <v-icon :icon="managingRestObject?.isHidden ? mdiEyeOffOutline : mdiEyeOutline" size="x-large" />
               <div class="explanation text-center">
                 {{ managingRestObject?.isHidden ? 'показать' : 'спрятать' }}
               </div>
@@ -55,7 +56,7 @@ setManagingRest()
         <div>
           <v-btn size="x-large" :to="`/${managingRestObject.alias}`" variant="text">
             <div class="d-flex flex-column align-center">
-              <v-icon icon="mdi-store-outline" size="x-large" />
+              <v-icon :icon="mdiStoreOutline" size="x-large" />
               <div class="explanation text-center">
               в магазин
               </div>
@@ -68,14 +69,14 @@ setManagingRest()
         <v-btn-toggle color="secondary" style="height: 60px" class="d-flex overflow-x-auto">
           <v-btn to="/cabinet-manager/orders" size="x-large">
             <div class="d-flex flex-column align-center">
-              <v-icon icon="mdi-cart-check" size="x-large" />
+              <v-icon :icon="mdiCartCheck" size="x-large" />
               <div class="explanation text-center">заказы</div>
             </div>
           </v-btn>
 
           <v-btn to="/cabinet-manager/create-meal" size="x-large">
             <div class="d-flex flex-column align-center">
-              <v-icon icon="mdi-bowl-mix-outline" size="x-large" />
+              <v-icon :icon="mdiBowlMixOutline" size="x-large" />
               <div class="explanation text-center">
                 создать <br />
                 товар/блюдо 
@@ -84,7 +85,7 @@ setManagingRest()
           </v-btn>
           <v-btn to="/cabinet-manager/manage-menu" size="x-large">
             <div class="d-flex flex-column align-center">
-              <v-icon icon="mdi-food-outline" size="x-large" />
+              <v-icon :icon="mdiFoodOutline" size="x-large" />
               <div class="explanation text-center">
                 управлять <br />
                 витриной
@@ -93,7 +94,7 @@ setManagingRest()
           </v-btn>
           <v-btn to="/cabinet-manager/rest-info" size="x-large">
             <div class="d-flex flex-column align-center">
-              <v-icon icon="mdi-tune-variant" size="x-large" />
+              <v-icon :icon="mdiTuneVariant" size="x-large" />
               <div class="explanation text-center">
                 информация <br />
                 о нас
@@ -103,7 +104,7 @@ setManagingRest()
 
           <v-btn to="/cabinet-manager/add-manager" size="x-large">
             <div class="d-flex flex-column align-center">
-              <v-icon icon="mdi-account-plus-outline" size="x-large" />
+              <v-icon :icon="mdiAccountPlusOutline" size="x-large" />
               <div class="explanation text-center">
                 добавить <br />
                 менеджера
@@ -112,7 +113,7 @@ setManagingRest()
           </v-btn>
           <v-btn to="/cabinet-manager/manage-email-list" size="x-large">
             <div class="d-flex flex-column align-center">
-              <v-icon icon="mdi-email-fast-outline" size="x-large" />
+              <v-icon :icon="mdiEmailFastOutline" size="x-large" />
               <div class="explanation text-center">
                 email список <br />
                 для уведомлений
@@ -120,15 +121,6 @@ setManagingRest()
             </div>
           </v-btn>
 
-          <!-- <NuxtLink to="/cabinet-manager/table-reservation" class="d-flex">
-            <div class="tab pa-4">
-              <v-icon icon="mdi-table-chair" size="x-large" />
-              <div class="explanation text-center">
-                бронирование <br />
-                столиков
-              </div>
-            </div>
-          </NuxtLink> -->
         </v-btn-toggle>
 
       </v-col>

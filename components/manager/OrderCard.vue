@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { OrderFromDb } from "@/types/order-from-db.interface"
-
+import {mdiAccountOutline, mdiPhoneOutline, mdiHomeCityOutline, mdiPaperclip, mdiCashRegister }  from '@mdi/js';
 const orderStore = useOrder()
 let props = defineProps<{
   order: OrderFromDb
@@ -37,14 +37,14 @@ watch(orderStatus, async (newStatus) => {
   </v-radio-group>
   <v-card class="pa-4 mt-4 mb-4 p-clamp">
     <div class="user-info">
-      <div><v-icon icon="mdi-account-outline" class="mr-2"></v-icon>{{ order.user.name }}</div>
+      <div><v-icon :icon="mdiAccountOutline" class="mr-2"></v-icon>{{ order.user.name }}</div>
       <div>
-        <v-icon icon="mdi-phone-outline" class="mr-2"></v-icon
+        <v-icon :icon="mdiPhoneOutline" class="mr-2"></v-icon
         ><a :href="'tel:' + order.user.phone">{{ order.user.phone }}</a>
       </div>
-      <div><v-icon icon="mdi-home-city-outline" class="mr-2"></v-icon>{{ order.user.address }}</div>
-      <div><v-icon icon="mdi-paperclip" class="mr-2"></v-icon>{{ order.user.comment }}</div>
-      <div><v-icon icon="mdi-cash-register" class="mr-2"></v-icon>{{ order?.user.paymentType }}</div>
+      <div><v-icon :icon="mdiHomeCityOutline" class="mr-2"></v-icon>{{ order.user.address }}</div>
+      <div><v-icon :icon="mdiPaperclip" class="mr-2"></v-icon>{{ order.user.comment }}</div>
+      <div><v-icon :icon="mdiCashRegister" class="mr-2"></v-icon>{{ order?.user.paymentType }}</div>
       <v-divider color="primary" :thickness="3" class="mt-2 pb-2" style="opacity: 1"></v-divider>
     </div>
     <div v-for="(item, j) in order.items" class="d-flex justify-space-between">

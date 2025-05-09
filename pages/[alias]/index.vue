@@ -1,11 +1,11 @@
 <script setup lang="ts">
-
+import { mdiCellphone, mdiShareVariantOutline, mdiSilverwareForkKnife, mdiInformationOutline, mdiMapMarkerOutline, mdiTruckFastOutline } from '@mdi/js';
 import { useShare } from '@vueuse/core'
 import InfoCard from '../../components/restindex/InfoCard.vue'
 import DeliveryCard from '../../components/restindex/DeliveryCard.vue'
 import AddressCard from '../../components/restindex/AddressCard.vue'
-import Menu from '~/components/restindex/Menu.vue';
-import Reservation from '~/components/restindex/Reservation.vue'
+import Menu from '../../components/restindex/Menu.vue';
+
 import type { RestFromDb } from "../../types/rest-from-db.interface.ts"
 const runtimeConfig = useRuntimeConfig()
 
@@ -65,7 +65,7 @@ rest.value = res.data.value
           <v-row>
             <v-col :cols="12" style="position: relative;" class="pa-0">
               <a :href="`tel:${rest?.phone}`"> <span class="phone p-clamp pa-1 pa-sm-2 pa-md-3"> <v-icon
-                    icon="mdi-cellphone" /> {{ rest?.phone }}
+                    :icon="mdiCellphone" /> {{ rest?.phone }}
                 </span></a>
               <div class="vk">
                 <a :href="rest?.socialMedia" target="_blank">
@@ -75,7 +75,7 @@ rest.value = res.data.value
 
               <div style="height:25dvh">
                 <v-img :src="rest?.images.headerimage" height="100%" cover alt="">
-                  <v-btn v-if="isSupported" size="small" icon="mdi-share-variant-outline" style="float: left;"
+                  <v-btn v-if="isSupported" size="small" :icon="mdiShareVariantOutline" style="float: left;"
                     class="mt-4 ml-md-6 ml-4" @click="startShare()">
 
                   </v-btn>
@@ -98,43 +98,38 @@ rest.value = res.data.value
             </v-col>
             <v-col cols="12" v-if="rest?.isHidden">
               <div class="text-center"> Сейчас мы закрыты</div>
-             
+
             </v-col>
             <v-col :cols="12" class="pb-0" v-if="!rest?.isHidden">
 
               <v-btn-toggle v-model="activMenu" color="secondary" style="height:60px" class="d-flex overflow-x-auto">
                 <v-btn @click="currentTab = Menu" size="x-large">
                   <div class="d-flex flex-column align-center">
-                    <v-icon icon="mdi-silverware-fork-knife" size="x-large" />
+                    <v-icon :icon="mdiSilverwareForkKnife" size="x-large" />
                     <div class="explanation">меню/витрина</div>
                   </div>
                 </v-btn>
 
                 <v-btn @click="currentTab = InfoCard" size="x-large">
                   <div class="d-flex flex-column align-center">
-                    <v-icon icon="mdi-information-outline" size="x-large" />
+                    <v-icon :icon="mdiInformationOutline" size="x-large" />
                     <div class="explanation">инфо</div>
                   </div>
                 </v-btn>
 
                 <v-btn @click="currentTab = DeliveryCard" size="x-large">
                   <div class="d-flex flex-column align-center">
-                    <v-icon icon="mdi-truck-fast-outline" size="x-large" />
+                    <v-icon :icon="mdiTruckFastOutline" size="x-large" />
                     <div class="explanation">время <br> работы</div>
                   </div>
                 </v-btn>
                 <v-btn @click="currentTab = AddressCard" size="x-large">
                   <div class="d-flex flex-column align-center">
-                    <v-icon icon="mdi-map-marker-outline" size="x-large" />
+                    <v-icon :icon="mdiMapMarkerOutline" size="x-large" />
                     <div class="explanation">адрес</div>
                   </div>
                 </v-btn>
-                <!-- <v-btn @click="" size="x-large" style="opacity: 0.5;">
-                    <div class="d-flex flex-column align-center">
-                      <v-icon icon="mdi-table-chair" size="x-large" />
-                      <div class="explanation text-center">столики</div>
-                    </div>
-                  </v-btn> -->
+        
               </v-btn-toggle>
 
             </v-col>

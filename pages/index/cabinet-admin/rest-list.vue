@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { mdiMagnify, mdiCloseCircle,mdiPencil, mdiEyeOffOutline, mdiEyeOutline, mdiTrashCanOutline } from '@mdi/js';
 import _, { rest } from "lodash";
 import type { RestFromDb } from "../../../types/rest-from-db.interface.ts";
 useHead({
@@ -73,10 +74,10 @@ getRestList();
         <h3 class="text-center">Список ресторанов</h3>
 
         <v-col cols="12" class="d-flex align-center">
-          <v-icon icon="mdi-magnify" class="ma-2" @click="showSearch" />
+          <v-icon :icon="mdiMagnify" class="ma-2" @click="showSearch" />
           <transition name="fade">
             <v-text-field v-model="filter" v-if="isShow" density="compact" variant="solo" hide-details single-line
-              placeholder="поиск ресторана" clear-icon="mdi-close-circle" clearable></v-text-field>
+              placeholder="поиск ресторана" :clear-icon="mdiCloseCircle" clearable></v-text-field>
           </transition>
         </v-col>
 
@@ -92,18 +93,18 @@ getRestList();
             <v-col cols="12" md="6"  class="d-flex justify-center justify-md-end">
               <div class="d-flex flex-column align-center" 
                 @click="router.push(`/cabinet-admin/rest-info?rest_id=${rest._id}`)">
-                <v-icon icon="mdi-pencil" size="x-large" class="cursor-pointer" />
+                <v-icon :icon="mdiPencil" size="x-large" class="cursor-pointer" />
                 <div class="explanation text-center">редактировать</div>
               </div>
               <div class="d-flex flex-column align-center pl-4 cursor-pointer" :class="{ 'show-hide': rest.isHidden }"
                 @click="initHideDialog(rest)">
-                <v-icon :icon="rest.isHidden ? 'mdi-eye-off-outline' : 'mdi-eye-outline'" size="x-large" />
+                <v-icon :icon="rest.isHidden ? mdiEyeOffOutline : mdiEyeOutline" size="x-large" />
                 <div class="explanation text-center">
                   {{ rest.isHidden ? "показать" : "скрыть" }}
                 </div>
               </div>
               <div class="d-flex flex-column align-center pl-4 ">
-                <v-icon icon="mdi-trash-can-outline" size="x-large" class="cursor-pointer"
+                <v-icon :icon="mdiTrashCanOutline" size="x-large" class="cursor-pointer"
                   @click="initDeleteDialog(rest._id)" />
                 <div class="explanation text-center">удалить</div>
               </div>

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import {mdiClose, mdiPhone, mdiCartRemove, mdiMinus, mdiPlus }  from '@mdi/js';
 useHead({
   title: "Глазов - есть!",
 })
@@ -123,7 +124,7 @@ watch(address, (newAddress) => {
 <template>
   <v-card class="py-5 px-6 position-relative">
     <div class="position-fixed top-0 left-0 pa-3  w-100 text-right">
-      <v-icon icon="mdi-close" variant="plain" color="accent" @click="emit('close')"></v-icon>
+      <v-icon :icon="mdiClose" variant="plain" color="accent" @click="emit('close')"></v-icon>
     </div>
 
 
@@ -164,10 +165,10 @@ watch(address, (newAddress) => {
           <a :href="restItem.restInfo.socialMedia" target="_blank" class="d-flex align-center ml-4">
             <img src="../../assets/icons/vk.svg" class="vk" />
           </a>
-          <a :href="`tel:${restItem.restInfo.phone}`"><v-icon icon="mdi-phone" class="ml-4" size="20" /></a>
+          <a :href="`tel:${restItem.restInfo.phone}`"><v-icon :icon="mdiPhone" class="ml-4" size="20" /></a>
         </div>
         <div class="d-flex align-center ml-6">
-          <v-btn icon="mdi-cart-remove" variant="plain" @click="clearRestCart(restItem.restId)"> </v-btn>
+          <v-btn :icon="mdiCartRemove" variant="plain" @click="clearRestCart(restItem.restId)"> </v-btn>
         </div>
       </div>
       <div v-for="item of restItem.items">
@@ -197,12 +198,12 @@ watch(address, (newAddress) => {
               <div class="d-flex justify-end align-center ml-4">
                 <div class="cart-actions">
                   <div class="cart-plus-minus">
-                    <v-icon icon="mdi-minus" class="cursor-pointer"
+                    <v-icon :icon="mdiMinus" class="cursor-pointer"
                       @click="minusCart(item.menuItemId, restItem.restId)"></v-icon>
                     <div class="cart-count">
                       {{ item.count }}
                     </div>
-                    <v-icon icon="mdi-plus" class="cursor-pointer"
+                    <v-icon :icon="mdiPlus" class="cursor-pointer"
                       @click="plusCart(item.menuItemId, restItem.restId)"></v-icon>
                   </div>
                 </div>

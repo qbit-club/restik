@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useWindowSize } from "@vueuse/core"
+import {mdiClose, mdiMenu, mdiHomeOutline, mdiAccountOutline, mdiShieldCrownOutline, mdiAccountTieOutline, mdiLogout, mdiLogin } from '@mdi/js';
 const { width } = useWindowSize()
 
 const router = useRouter()
@@ -36,7 +37,7 @@ async function logout() {
   <v-responsive>
     <v-app class="overflow-y-auto" style="max-height: 100vh">
       <div>
-        <v-btn icon="mdi-menu" density="comfortable" outlined color="primary" class="menu-button"
+        <v-btn :icon="mdiMenu" density="comfortable" outlined color="primary" class="menu-button"
           @click="navigationDrawer = !navigationDrawer" />
       </div>
 
@@ -54,7 +55,7 @@ async function logout() {
                 <h3 style="font-family: 'Sensei', sans-serif;">Глазов-есть!</h3>
 
 
-                <v-icon icon="mdi-close" color="accent" class="cursor-pointer"
+                <v-icon :icon="mdiClose" color="accent" class="cursor-pointer"
                   @click="navigationDrawer = false"></v-icon>
               </v-col>
             </v-row>
@@ -62,31 +63,31 @@ async function logout() {
               <v-col cols="12" md="6">
                 <v-list>
 
-                  <v-list-item prepend-icon="mdi-home-outline" to="/" @click="navigationDrawer = false"
+                  <v-list-item :prepend-icon="mdiHomeOutline" to="/" @click="navigationDrawer = false"
                     :active="router.currentRoute.value.path == '/' ? true : false">
                     <div style="font-size: 0.8rem; font-weight: 500">Кафе/магазины</div>
                   </v-list-item>
 
-                  <v-list-item prepend-icon="mdi-account-outline" to="/cabinet-user/orders"
+                  <v-list-item :prepend-icon="mdiAccountOutline" to="/cabinet-user/orders"
                     @click="navigationDrawer = false">
                     <div style="font-size: 0.8rem; font-weight: 500">Мои заказы</div>
                   </v-list-item>
 
-                  <v-list-item prepend-icon="mdi-shield-crown-outline" to="/cabinet-admin/rest-list"
+                  <v-list-item :prepend-icon="mdiShieldCrownOutline" to="/cabinet-admin/rest-list"
                     @click="navigationDrawer = false" v-if="isAdmin">
                     <div style="font-size: 0.8rem; font-weight: 500">Администратор</div>
                   </v-list-item>
 
-                  <v-list-item prepend-icon="mdi-account-tie-outline" to="/cabinet-manager/orders"
+                  <v-list-item :prepend-icon="mdiAccountTieOutline" to="/cabinet-manager/orders"
                     @click="navigationDrawer = false" v-if="isManager">
                     <div style="font-size: 0.8rem; font-weight: 500">Менеджер</div>
                   </v-list-item>
 
-                  <v-list-item @click="logout" prepend-icon="mdi-logout" v-if="isLoggedIn">
+                  <v-list-item @click="logout" :prepend-icon="mdiLogout" v-if="isLoggedIn">
                     <div style="font-size: 0.8rem; font-weight: 500">Выйти</div>
                   </v-list-item>
 
-                  <v-list-item @click="router.push('/login')" prepend-icon="mdi-login" v-else>
+                  <v-list-item @click="router.push('/login')" :prepend-icon="mdiLogin" v-else>
                     <div style="font-size: 0.8rem; font-weight: 500">Войти</div>
                   </v-list-item>
                   <v-list-item>
@@ -98,6 +99,7 @@ async function logout() {
 
 
                 </v-list>
+               
               </v-col>
               <!-- <v-col cols="12" class="d-flex justify-center">
                 <img src="~/assets/icons/kvak.gif" alt="">

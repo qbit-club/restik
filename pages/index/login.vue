@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useField, useForm } from 'vee-validate';
-
+import { mdiEye, mdiEyeOff } from '@mdi/js';
 const auth = useAuth()
 let router = useRouter()
 
@@ -60,7 +60,7 @@ const login = handleSubmit(async values => {
           <v-text-field 
             label="Пароль"
             v-model="password.value.value"
-            :append-inner-icon="show_password ? 'mdi-eye' : 'mdi-eye-off'"
+            :append-inner-icon="show_password ? mdiEye : mdiEyeOff"
             @click:append-inner="show_password = !show_password"
             :type="show_password ? 'text' : 'password'"
             :error-messages="password.errorMessage.value"

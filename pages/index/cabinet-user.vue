@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { mdiAccountOutline, mdiCartCheck} from '@mdi/js';
 definePageMeta({
   middleware: 'auth'
 })
@@ -19,22 +20,17 @@ let activMenu = ref<string>('1')
         <v-btn-toggle v-model="activMenu" color="secondary" style="height:60px" class="d-flex overflow-x-auto">
         <v-btn to="/cabinet-user/profile" class="d-flex">
           <div class="d-flex flex-column align-center pa-4">
-            <v-icon icon="mdi-account-outline" size="x-large" />
+            <v-icon :icon="mdiAccountOutline" size="x-large" />
             <div class="explanation text-center">Профиль</div>
           </div>
         </v-btn>
         <v-btn to="/cabinet-user/orders" class="d-flex">
           <div class="d-flex flex-column align-center pa-4">
-            <v-icon icon="mdi-cart-check" size="x-large" />
+            <v-icon :icon="mdiCartCheck" size="x-large" />
             <div class="explanation text-center">Мои заказы</div>
           </div>
         </v-btn>
-        <!-- <NuxtLink to="/cabinet-user/table-reservation" class="d-flex">
-          <div class="d-flex flex-column align-center pa-4">
-            <v-icon icon="mdi-table-chair" size="x-large" />
-            <div class="explanation text-center">Бронирования</div>
-          </div>
-        </NuxtLink> -->
+    
         </v-btn-toggle>
       </v-col>
       <v-col>

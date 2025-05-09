@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { FoodListItemFromDb } from '@/types/food-list-item-from-db.interface'
 import type { RestFromDb } from '@/types/rest-from-db.interface'
+import {mdiCartPlus, mdiMinus, mdiPlus, mdiClose }  from '@mdi/js';
 
 let { meal, rest } = defineProps<{
     meal: FoodListItemFromDb,
@@ -85,13 +86,13 @@ function minusCart() {
 
             <div class="d-flex justify-center align-center">
                 <div class="cart-actions">
-                    <v-icon icon="mdi-cart-plus" @click="addToCart" v-if="mealCartCount == 0"></v-icon>
+                    <v-icon :icon="mdiCartPlus" @click="addToCart" v-if="mealCartCount == 0"></v-icon>
                     <div v-else class="cart-plus-minus">
-                        <v-icon icon="mdi-minus" class="cursor-pointer" @click="minusCart"></v-icon>
+                        <v-icon :icon="mdiMinus" class="cursor-pointer" @click="minusCart"></v-icon>
                         <div class="cart-count">
                             {{ mealCartCount }}
                         </div>
-                        <v-icon icon="mdi-plus" class="cursor-pointer" @click="plusCart"></v-icon>
+                        <v-icon :icon="mdiPlus" class="cursor-pointer" @click="plusCart"></v-icon>
                     </div>
                 </div>
 
@@ -105,7 +106,7 @@ function minusCart() {
            
      
         <v-img :src="meal.images[0]" class="text-right"  v-if="meal.images[0]" @click="dialog = false">
-            <v-btn icon="mdi-close" variant="plain" @click="dialog = false" color="accent"> </v-btn>
+            <v-btn :icon="mdiClose" variant="plain" @click="dialog = false" color="accent"> </v-btn>
         </v-img>
 
 

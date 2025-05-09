@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { mdiMagnify} from '@mdi/js';
 import type { RestFromDb } from "@/types/rest-from-db.interface"
 import _ from "lodash"
 let restStore = useRest()
@@ -76,7 +77,7 @@ watch(user, () => {
         <v-row class="d-flex justify-center">
           <v-col cols="12" md="6">
             <v-text-field max-width="100%" hide-details v-model="filter" density="compact" variant="solo" clearable
-              append-inner-icon="mdi-magnify"></v-text-field>
+              :append-inner-icon="mdiMagnify"></v-text-field>
 
           </v-col>
         </v-row>

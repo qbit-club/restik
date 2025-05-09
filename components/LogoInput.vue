@@ -1,5 +1,5 @@
 <script setup lang="ts">
-
+import {mdiCamera}  from '@mdi/js';
 const emit = defineEmits(['uploadImage'])
 let logoInput = ref<{
   files: File[]
@@ -16,7 +16,7 @@ function uploadImage() {
     <input type="file" accept="image/*" ref="logoInput" id="uploadLogo" @change="uploadImage" style="display: none">
     <label for="uploadLogo">
       <div class="file-input-label">
-        <v-icon icon="mdi-camera" size="x-large" />
+        <v-icon :icon="mdiCamera" size="x-large" />
         <span class="explanation text-center"> логотип</span>
       </div>
     </label>

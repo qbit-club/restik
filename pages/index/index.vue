@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-
+import { mdiMagnify, mdiCloseCircle} from '@mdi/js';
 useHead({
     title: 'Глазов - есть!'
 })
@@ -71,11 +71,11 @@ getRests()
 
     <v-col cols="12" class="d-flex align-center justify-center">
         <ClientOnly>
-            <v-text-field v-model='filter' prepend-inner-icon="mdi-magnify" density="compact" max-width="300px"
-                variant="solo" hide-details single-line placeholder="найти" clear-icon="mdi-close-circle"
+            <v-text-field v-model='filter' :prepend-inner-icon="mdiMagnify" density="compact" max-width="300px"
+                variant="solo" hide-details single-line placeholder="найти" :clear-icon="mdiCloseCircle"
                 clearable></v-text-field>
         </ClientOnly>
-        <!-- <v-icon icon="mdi-magnify" class="ma-2" @click="showSearch" /> -->
+    
     </v-col>
     <v-col cols="12" class="loading" v-if="loading">
         <img src="../../assets/icons/kvak.gif" alt="">
