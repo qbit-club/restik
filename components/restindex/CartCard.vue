@@ -81,6 +81,12 @@ async function order() {
     })
     return
   }
+  if (amount.value == '0.00') {
+    toast("Пустая корзина", {
+      type: "warning",
+    })
+    return
+  }
   loading.value = true
   let response = await cartStore.order(String(route.params.alias), {
     name: name.value,
