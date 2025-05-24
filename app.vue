@@ -44,10 +44,7 @@ useHead({
       sizes: '512x512',
       href: '/pwa-512x512.png',
     },
-    {
-      rel: 'manifest',
-      href: '/site.webmanifest',
-    },
+   
   ],
 })
 </script>
