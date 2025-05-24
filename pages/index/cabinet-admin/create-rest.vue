@@ -99,21 +99,6 @@ let location = ref<any>(
 const locationSearchRequest = ref<string>('');
 const possibleLocations = ref<Location[] | undefined>(undefined);
 
-let locationToSend = computed(() => {
-
-  if (location.value) {
-
-    location.value.type = 'Point'
-    location.value.coordinates = [
-      Number(location.value.geo.geo_lat),
-      Number(location.value.geo.geo_lon)
-    ]
-    console.log(location)
-    return location.value
-  }
-})
-
-
 // base64 img
 let logoPreview = ref()
 function uploadLogo(file: File) {
@@ -153,7 +138,7 @@ const submit = handleSubmit(async values => {
 
   let toSend = {
     ...values,
-    location: locationToSend.value,
+    location: location.value,
     description: description.value,
     schedule: schedule.value,
     author: String(authStore.user?._id),
@@ -220,9 +205,27 @@ function onReady(editor:any) {
     }
 
 watch(locationSearchRequest, async (value) => {
-  const locations: any = await getPossibleLocations(value); // any - костыль надо переписать dadata.ts
-  possibleLocations.value = locations ?? []; // Если locations undefined, присваиваем пустой массив
+   if (value.length >= 3) {
+    const locations = await getPossibleLocations(value)
+
+    possibleLocations.value = (locations ?? []).map((item) => ({
+      ...item.geo, 
+  
+    }))
+  } else {
+    possibleLocations.value = []
+  }
 });
+watch(location, ()=>{
+    if (location.value.name) {
+    location.value.type = 'Point'
+    location.value.coordinates = [
+      Number(location.value.geo_lat),
+      Number(location.value.geo_lon)
+    ]
+    return location.value
+  }
+})
 
 </script>
 <template>
@@ -285,8 +288,8 @@ watch(locationSearchRequest, async (value) => {
               </v-col>
 
               <v-col cols="12">
-                {{ location }}
-                <v-combobox hide-details density="compact" v-model="location" v-model:search="locationSearchRequest"
+         
+                <v-combobox hide-details density="compact" v-model="location"   v-model:search="locationSearchRequest"
                   :items="possibleLocations" item-title="name" placeholder="Место" item-value="geo" variant="outlined"
                   clearable>
                   <template v-slot:no-data>

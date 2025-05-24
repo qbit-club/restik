@@ -6,10 +6,10 @@ import { aliases, mdi } from "vuetify/iconsets/mdi-svg";
 
 export default defineNuxtPlugin((nuxtApp) => {
   const vuetify = createVuetify({
-    locale: {
-      locale: "ru",
-      fallback: "en",
-    },
+    // locale: {
+    //   locale: "ru",
+    //   fallback: "en",
+    // },
     defaults: {
       VBtn: {
         style: "text-transform: none; letter-spacing: normal",

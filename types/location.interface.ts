@@ -1,13 +1,10 @@
 export interface Location {
-  name: string | null;
-  geo: {
-    name: string | null;
-    geo_lat: string | null;
-    geo_lon: string | null;
-    city_with_type: string | null;
-    settlement_with_type: string | null;
-    region_with_type: string | null;
-    area_with_type: string | null;
-    capital_marker: string | null;
-  };
+  name?: string;
+  geo_lat?: string;
+  geo_lon?: string;
+  city_with_type?: string;
+  settlement_with_type?: string;
+  region_with_type?: string;
+  area_with_type?: string;
+  capital_marker?: string;
 }

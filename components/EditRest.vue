@@ -92,13 +92,7 @@ let location = ref<any>(rest.value?.location)
 const locationSearchRequest = ref<string>("")
 const possibleLocations = ref<Location[] | undefined>(undefined)
 
-let locationToSend = computed(() => {
-  if (location.value) {
-    location.value.type = "Point"
-    location.value.coordinates = [Number(location.value.geo_lat), Number(location.value.geo_lon)]
-    return location.value
-  }
-})
+
 
 // base64 img
 let logoPreview = ref<any>(rest.value?.images?.logo)
@@ -150,7 +144,7 @@ const submit = handleSubmit(async (values) => {
 
   let toSend = {
     ...values,
-    location: locationToSend.value,
+    location: location.value,
     description: description.value,
     schedule: schedule.value,
     author: String(authStore.user?._id),
@@ -174,9 +168,27 @@ const submit = handleSubmit(async (values) => {
   }
 })
 
-watch(locationSearchRequest, async (value: any) => {
-  const locations: any = await getPossibleLocations(value) // any - костыль надо переписать dadata.ts
-  possibleLocations.value = locations ?? [] // Если locations undefined, присваиваем пустой массив
+watch(locationSearchRequest, async (value) => {
+   if (value.length >= 3) {
+    const locations = await getPossibleLocations(value)
+
+    possibleLocations.value = (locations ?? []).map((item) => ({
+      ...item.geo, 
+  
+    }))
+  } else {
+    possibleLocations.value = []
+  }
+});
+watch(location, ()=>{
+    if (location.value.name) {
+    location.value.type = 'Point'
+    location.value.coordinates = [
+      Number(location.value.geo_lat),
+      Number(location.value.geo_lon)
+    ]
+    return location.value
+  }
 })
 </script>
 <template>
@@ -189,6 +201,8 @@ watch(locationSearchRequest, async (value: any) => {
             <v-row>
               <v-col cols="12">
                 <div class="label">Название</div>
+                <!-- {{ rest }} -->
+                {{ location }}
                 <v-text-field
                   v-model="title.value.value"
                   :error-messages="title.errorMessage.value"
@@ -271,24 +285,14 @@ watch(locationSearchRequest, async (value: any) => {
               </v-col>
 
               <v-col cols="12">
-                <v-autocomplete
-                  hide-details
-                  density="compact"
-                  v-model="location"
-                  v-model:search="locationSearchRequest"
-                  :items="possibleLocations"
-                  item-title="name"
-                  placeholder="Место"
-                  item-value="geo"
-                  variant="outlined"
-                  clearable
-                >
+                  <v-combobox hide-details density="compact" v-model="location"   v-model:search="locationSearchRequest"
+                  :items="possibleLocations" item-title="name" placeholder="Место" item-value="geo" variant="outlined"
+                  clearable>
                   <template v-slot:no-data>
                     <div class="pt-2 pr-4 pb-2 pl-4">
-                      {{ locationSearchRequest.trim().length < 3 ? "Минимум 3 символа" : "Не найдено" }}
-                    </div>
+                      {{ locationSearchRequest.trim().length < 3 ? "Минимум 3 символа" : "Не найдено" }} </div>
                   </template>
-                </v-autocomplete>
+                </v-combobox>
               </v-col>
 
               <v-col :cols="12" style="margin-bottom: 80px" v-if="logoPreview || headerImagePreview">
