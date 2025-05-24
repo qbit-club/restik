@@ -285,7 +285,6 @@ watch(locationSearchRequest, async (value) => {
               </v-col>
 
               <v-col cols="12">
-                {{ location }}
                 <v-combobox hide-details density="compact" v-model="location" v-model:search="locationSearchRequest"
                   :items="possibleLocations" item-title="name" placeholder="Место" item-value="geo" variant="outlined"
                   clearable>
