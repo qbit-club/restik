@@ -12,14 +12,14 @@ import { fromLonLat } from "ol/proj";
 import { Circle as CircleStyle, Fill, Stroke, Style } from "ol/style";
 
 // Определение типа для координат
-type Location = {
-  geo_lon: number,
-  geo_lat: number
-}
+// type Location = {
+//   geo_lon: number,
+//   geo_lat: number
+// }
 
 // Получение пропсов
 const props = defineProps<{
-  location: Location;
+  location: any;
 }>();
 
 // Ссылка на объект карты
