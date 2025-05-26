@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useWindowSize } from "@vueuse/core"
-import {mdiClose, mdiMenu, mdiHomeOutline, mdiAccountOutline, mdiShieldCrownOutline, mdiAccountTieOutline, mdiLogout, mdiLogin } from '@mdi/js';
+import { mdiClose, mdiMenu, mdiHomeOutline, mdiAccountOutline, mdiShieldCrownOutline, mdiAccountTieOutline, mdiLogout, mdiLogin } from '@mdi/js';
 const { width } = useWindowSize()
 
 const router = useRouter()
@@ -91,15 +91,16 @@ async function logout() {
                     <div style="font-size: 0.8rem; font-weight: 500">Войти</div>
                   </v-list-item>
                   <v-list-item>
-                    <div class="d-flex justify-center align-center" style="font-size: 0.8rem; font-weight: 900">Пишите в телеграм <a href="https://t.me/grachevrv" target="_blank"> 
-                      <img class="ma-2" src="~/assets/icons/telegram.svg" alt="Изображение не загрузилось"></a></div>
+                    <div class="d-flex justify-center align-center" style="font-size: 0.8rem; font-weight: 900">Пишите в
+                      телеграм <a href="https://t.me/grachevrv" target="_blank">
+                        <img class="ma-2" src="~/assets/icons/telegram.svg" alt="Изображение не загрузилось"></a></div>
 
-                   
+
                   </v-list-item>
 
 
                 </v-list>
-               
+
               </v-col>
               <!-- <v-col cols="12" class="d-flex justify-center">
                 <img src="~/assets/icons/kvak.gif" alt="">
@@ -122,6 +123,12 @@ async function logout() {
               Описание и ограничения
             </span>
           </div>
+          <a href="https://storage.yandexcloud.net/politica/Politica%20confidetcionalnosty.pdf" target="_blank">
+            <div class="mb-2 description">
+              Политика конфиденциальности
+            </div>
+          </a>
+
           <a href="https://vk.com/qbitclub" target="_blank">
             <img src="../assets/images/madewithlove.png" alt="" style="max-width:100px">
           </a>

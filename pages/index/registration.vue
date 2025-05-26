@@ -7,7 +7,7 @@ import _ from 'lodash'
 
 const router = useRouter()
 const auth = useAuth()
-
+let agreement = ref(true)
 const { meta, handleSubmit, handleReset, validate } = useForm<{
   name: string,
   email: string,
@@ -54,13 +54,13 @@ let loading = ref(false)
 
 const submit = handleSubmit(async values => {
   loading.value = true
-  
-  await auth.registration(values)
-  .then((res: Boolean) => {
-    if (res) router.push(`/`)
-  })
 
-  loading.value = false 
+  await auth.registration(values)
+    .then((res: Boolean) => {
+      if (res) router.push(`/`)
+    })
+
+  loading.value = false
 })
 </script>
 
@@ -68,72 +68,42 @@ const submit = handleSubmit(async values => {
   <v-container>
     <!-- <BackButton /> -->
 
-    <v-col 
-      cols="12" xs="12" sm="10" md="7" lg="5" 
-      class="ma-auto"
-    >
-  
-        <div 
-          class="text-h6 font-weight-bold pa-8 text-center"
-        >
-          Регистрация
+    <v-col cols="12" xs="12" sm="10" md="7" lg="5" class="ma-auto">
+
+      <div class="text-h6 font-weight-bold pa-8 text-center">
+        Регистрация
+      </div>
+
+      <v-form class=" w-100 align-center justify-center d-flex flex-column" @submit="submit">
+        <v-text-field label="Имя Фамилия" type="name" placeholder="Иван Иванов" v-model="name.value.value"
+          :error-messages="name.errors.value" variant="outlined" density="compact" class="w-100" />
+
+        <v-text-field label="Email" type="email" placeholder="vasya@ya.ru" v-model="email.value.value"
+          :error-messages="email.errors.value" variant="outlined" density="compact" class="w-100" />
+
+        <v-text-field label="Пароль" v-model="password.value.value"
+          :append-inner-icon="show_password ? mdiEye : mdiEyeOff" @click:append-inner="show_password = !show_password"
+          :type="show_password ? 'text' : 'password'" :error-messages="password.errorMessage.value" variant="outlined"
+          density="compact" class="w-100" />
+        <div class="d-flex ">
+          <v-checkbox v-model="agreement" class="mr-4">
+
+          </v-checkbox >
+          <span>Я даю согласие на обработку персональных данных согласно <a
+              href="https://storage.yandexcloud.net/politica/Politica%20confidetcionalnosty.pdf"
+              target="_blank"><b>Правил</b></a> </span>
         </div>
-  
-        <v-form
-          class=" w-100 align-center justify-center d-flex flex-column"
-          @submit="submit"
-        >
-          <v-text-field 
-            label="Имя Фамилия"
-            type="name"
-            placeholder="Иван Иванов"
-            v-model="name.value.value"
-            :error-messages="name.errors.value"
-            variant="outlined"
-            density="compact"
-            class="w-100"
-          />    
 
-          <v-text-field 
-            label="Email"
-            type="email"
-            placeholder="vasya@ya.ru"
-            v-model="email.value.value"
-            :error-messages="email.errors.value"
-            variant="outlined"
-            density="compact"
-            class="w-100"
-          />          
+        <v-btn type="submit" :disabled="!meta.valid||!agreement" :loading="loading" color="primary">
+          Отправить
+        </v-btn>
+      </v-form>
 
-          <v-text-field 
-            label="Пароль"
-            v-model="password.value.value"
-            :append-inner-icon="show_password ? mdiEye : mdiEyeOff"
-            @click:append-inner="show_password = !show_password"
-            :type="show_password ? 'text' : 'password'"
-            :error-messages="password.errorMessage.value"
-            variant="outlined"
-            density="compact"
-            class="w-100"
-          />
+      <div @click="router.push('/login')"
+        class="text-body-2 pa-2 w-100 cursor-pointer font-weight-semibold text-center">
+        вход
+      </div>
 
-          <v-btn 
-            type="submit" 
-            :disabled="!meta.valid" 
-            :loading="loading"
-            color="primary"
-          >
-            Отправить
-          </v-btn>
-        </v-form>
-  
-        <div 
-          @click="router.push('/login')" 
-          class="text-body-2 pa-2 w-100 cursor-pointer font-weight-semibold text-center"
-        >
-          вход
-        </div>
-  
     </v-col>
   </v-container>
 </template>
