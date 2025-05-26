@@ -288,8 +288,7 @@ watch(location, ()=>{
               </v-col>
 
               <v-col cols="12">
-         
-                <v-combobox hide-details density="compact" v-model="location"   v-model:search="locationSearchRequest"
+                <v-combobox hide-details density="compact" v-model="location" v-model:search="locationSearchRequest"
                   :items="possibleLocations" item-title="name" placeholder="Место" item-value="geo" variant="outlined"
                   clearable>
                   <template v-slot:no-data>
