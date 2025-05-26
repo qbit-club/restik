@@ -131,7 +131,6 @@ rest.value = res.data.value
                 </v-btn>
         
               </v-btn-toggle>
-{{ rest?.location }}
             </v-col>
             <component :is="currentTab" :rest="rest" v-if="!rest?.isHidden"></component>
           </v-row>
