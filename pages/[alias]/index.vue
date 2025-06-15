@@ -94,7 +94,6 @@ rest.value = res.data.value
               <p class="text-center p-clamp font-weight-light">{{ rest?.type.toLowerCase() }}</p>
               <v-divider width="30%" style="margin-left: auto; margin-right: auto;"></v-divider>
               <div class="title">{{ rest?.title }}</div>
-
             </v-col>
             <v-col cols="12" v-if="rest?.isHidden">
               <div class="text-center"> Сейчас мы закрыты</div>

@@ -36,7 +36,8 @@ const { meta, handleSubmit, validate } = useForm({
     socialMedia: '',
     menu: [],
     foodList: [],
-    deleted: false
+    deleted: false,
+    placeOnShowcase: 1000
     // description: '',
     // schedule: ''
     // price: '',
@@ -76,6 +77,13 @@ const { meta, handleSubmit, validate } = useForm({
 
       return true
     },
+    placeOnShowcase(value: number) {
+
+      if (!Number.isInteger(Number(value)) || Number(value) < 0 || !value) {
+        return 'число - место на витрине';
+      }
+      return true;
+    },
     socialMedia(value: string) {
       let regexp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
       if (!regexp.test(value?.trim())) return 'неправильный формат'
@@ -91,7 +99,7 @@ let type = useField<string>('type')
 let alias = useField<string>('alias')
 let phone = useField<string>('phone')
 let socialMedia = useField<string>('socialMedia')
-
+let placeOnShowcase = useField<number>('placeOnShowcase')
 let imagesFormData = new FormData()
 
 let location = ref<any>(
@@ -165,59 +173,59 @@ const submit = handleSubmit(async values => {
 })
 
 const options = reactive({
-    theme: 'snow',
-    modules: {
-        clipboard: {
-            allowed: {
-                tags: ['a', 'b', 'strong', 'u', 's', 'i', 'p', 'br', 'ul', 'ol', 'li', 'span'],
-                attributes: ['href', 'rel', 'target', 'class']
-            },
-            customButtons: [
-                {
-                    module: 'quillEmbeds',
-                    allowedTags: ['embed'],
-                    allowedAttr: ['width', 'height'],
-                }
-            ],
-            keepSelection: true,
-            substituteBlockElements: true,
-            magicPasteLinks: true,
-            hooks: {
-                uponSanitizeElement(node:any, data:any, config:any) {
-                    console.log(node);
-                },
-            },
+  theme: 'snow',
+  modules: {
+    clipboard: {
+      allowed: {
+        tags: ['a', 'b', 'strong', 'u', 's', 'i', 'p', 'br', 'ul', 'ol', 'li', 'span'],
+        attributes: ['href', 'rel', 'target', 'class']
+      },
+      customButtons: [
+        {
+          module: 'quillEmbeds',
+          allowedTags: ['embed'],
+          allowedAttr: ['width', 'height'],
+        }
+      ],
+      keepSelection: true,
+      substituteBlockElements: true,
+      magicPasteLinks: true,
+      hooks: {
+        uponSanitizeElement(node: any, data: any, config: any) {
+          console.log(node);
         },
+      },
     },
+  },
 })
-function onReady(editor:any) {
-      const quill = editor.getEditor()
-      quill.clipboard.addMatcher('text/html', (node:any, utils:any) => {
-        const text = utils.getText()
-        // clean styles
-        const cleanContent = text.replace(/(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)([^\s]+(.*)?)/g, '')
-          .replace(/background:.*/g, '')
-          .replace(/color:.*/g, '')
-          .replace(/box-shadow:.*/g, '')
+function onReady(editor: any) {
+  const quill = editor.getEditor()
+  quill.clipboard.addMatcher('text/html', (node: any, utils: any) => {
+    const text = utils.getText()
+    // clean styles
+    const cleanContent = text.replace(/(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)([^\s]+(.*)?)/g, '')
+      .replace(/background:.*/g, '')
+      .replace(/color:.*/g, '')
+      .replace(/box-shadow:.*/g, '')
 
-        return utils.createHTML(cleanContent)
-      })
-    }
+    return utils.createHTML(cleanContent)
+  })
+}
 
 watch(locationSearchRequest, async (value) => {
-   if (value.length >= 3) {
+  if (value.length >= 3) {
     const locations = await getPossibleLocations(value)
 
     possibleLocations.value = (locations ?? []).map((item) => ({
-      ...item.geo, 
-  
+      ...item.geo,
+
     }))
   } else {
     possibleLocations.value = []
   }
 });
-watch(location, ()=>{
-    if (location.value.name) {
+watch(location, () => {
+  if (location.value.name) {
     location.value.type = 'Point'
     location.value.coordinates = [
       Number(location.value.geo_lat),
@@ -254,7 +262,7 @@ watch(location, ()=>{
                   placeholder="shaurma" variant="outlined" density="compact" class="w-100" />
                 <div v-if="alias.value.value.length > 0" class="label text-right">
                   url ресторана: <i style="text-decoration: underline;">{{ config.public.siteUrl + '/' +
-          alias.value.value
+                    alias.value.value
                     }}</i>
                 </div>
               </v-col>
@@ -282,8 +290,7 @@ watch(location, ()=>{
                 <div class="editor-container">
                   <QuillEditor theme="snow" v-model:content="description" contentType="html"
                     :toolbar="[['bold', 'italic', 'underline'], [{ 'list': 'ordered' }, { 'list': 'bullet' }], ['clean']]"
-                    :options="options"
-                    />
+                    :options="options" />
                 </div>
               </v-col>
 
@@ -296,9 +303,13 @@ watch(location, ()=>{
                       {{ locationSearchRequest.trim().length < 3 ? "Минимум 3 символа" : "Не найдено" }} </div>
                   </template>
                 </v-combobox>
-              
-              </v-col>
 
+              </v-col>
+              <v-col cols="12" md="6">
+                <div class="label">Место на витрине</div>
+                <v-text-field v-model="placeOnShowcase.value.value" :error-messages="placeOnShowcase.errorMessage.value"
+                  placeholder="место на витрине" type="number" variant="outlined" density="compact" class="w-100" />
+              </v-col>
 
               <v-col :cols="12" style="position: relative; margin-bottom: 80px;"
                 v-if="logoPreview || headerImagePreview">
@@ -328,7 +339,7 @@ watch(location, ()=>{
           </v-form>
         </v-col>
       </v-row>
-     </v-container>
+    </v-container>
 
   </ClientOnly>
 </template>

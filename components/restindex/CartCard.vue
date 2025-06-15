@@ -17,7 +17,7 @@ let name = ref<string>(localStorage.getItem("name") || userStore.user?.name || "
 let phone = ref<string>(localStorage.getItem("phone") ?? "")
 let address = ref<string>(localStorage.getItem("address") ?? "")
 let comment = ref<string>("")
-let paymentType = ref<string>("")
+// let paymentType = ref<string>("")
 
 function plusCart(itemId: string, restId: string) {
   let success = cartStore.plusCart(itemId, restId)
@@ -75,12 +75,12 @@ async function order() {
     })
     return
   }
-  if (paymentType.value == "") {
-    toast("Выберите способ оплаты", {
-      type: "warning",
-    })
-    return
-  }
+  // if (paymentType.value == "") {
+  //   toast("Выберите способ оплаты", {
+  //     type: "warning",
+  //   })
+  //   return
+  // }
   if (amount.value == '0.00') {
     toast("Пустая корзина", {
       type: "warning",
@@ -93,12 +93,11 @@ async function order() {
     phone: phone.value,
     address: address.value,
     comment: comment.value,
-    paymentType: paymentType.value
+    // paymentType: paymentType.value
 
   })
   if (response.status.value == "success") {
     loading.value = false
-    console.log(response)
     let orderId = response.data.value.order._id
     let tmpId = orderId.slice(orderId.length - 5, orderId.length)
     toast(`Заказ №${tmpId} принят!`, {
@@ -153,14 +152,14 @@ watch(address, (newAddress) => {
           <div class="caption"> Комментарии</div>
           <v-textarea variant="outlined" auto-grow rows="1" :hide-details="true" v-model="comment"></v-textarea>
         </v-col>
-        <v-col cols="12" class="pb-0">
+        <!-- <v-col cols="12" class="pb-0">
           <div class="caption"> Оплата</div>
           <v-radio-group inline v-model="paymentType">
             <v-radio color="accent" label="Наличными" value="наличными"></v-radio>
             <v-radio color="accent" label="Карточкой" value="карточкой"></v-radio>
 
           </v-radio-group>
-        </v-col>
+        </v-col> -->
       </v-row>
       <h3>{{ restItem.restInfo.title }}</h3>
       <div class="rest-info">

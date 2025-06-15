@@ -3,6 +3,9 @@ import { QuillEditor } from "@vueup/vue-quill"
 import "@vueup/vue-quill/dist/vue-quill.snow.css"
 import getPossibleLocations from "~/composables/dadata"
 import type { Location } from "~/types/location.interface"
+let userStore = useAuth()
+
+let { user } = storeToRefs(userStore)
 
 const props = defineProps<{
   rest: any
@@ -33,6 +36,7 @@ const { meta, handleSubmit, setValues, validate } = useForm({
     alias: rest.value?.alias ?? "",
     phone: rest.value?.phone ?? "",
     socialMedia: rest.value?.socialMedia ?? "",
+    placeOnShowcase: rest.value?.placeOnShowcase ?? "",
     // description: '',
     // schedule: ''
     // price: '',
@@ -71,6 +75,13 @@ const { meta, handleSubmit, setValues, validate } = useForm({
 
       return true
     },
+    placeOnShowcase(value: number) {
+
+      if (!Number.isInteger(Number(value)) || Number(value) < 0 || !value) {
+        return 'число - место на витрине';
+      }
+      return true;
+    },
     socialMedia(value: string) {
       let regexp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi
       if (!regexp.test(value?.trim())) return "неправильный формат"
@@ -85,14 +96,16 @@ let type = useField<string>("type")
 let alias = useField<string>("alias")
 let phone = useField<string>("phone")
 let socialMedia = useField<string>("socialMedia")
-
+let placeOnShowcase = useField<number>('placeOnShowcase')
 let imagesFormData = new FormData()
 
 let location = ref<any>(rest.value?.location)
 const locationSearchRequest = ref<string>("")
 const possibleLocations = ref<Location[] | undefined>(undefined)
 
-
+let isAdmin = computed(() => {
+  return user?.value?.roles?.includes('admin') ?? false
+})
 
 // base64 img
 let logoPreview = ref<any>(rest.value?.images?.logo)
@@ -133,6 +146,7 @@ watch(rest, () => {
     alias: rest.value?.alias ?? "",
     phone: rest.value?.phone ?? "",
     socialMedia: rest.value?.socialMedia ?? "",
+    placeOnShowcase: rest.value?.placeOnShowcase,
   })
   location.value = rest.value?.location
   headerImagePreview.value = rest.value?.images?.headerimage
@@ -169,19 +183,19 @@ const submit = handleSubmit(async (values) => {
 })
 
 watch(locationSearchRequest, async (value) => {
-   if (value.length >= 3) {
+  if (value.length >= 3) {
     const locations = await getPossibleLocations(value)
 
     possibleLocations.value = (locations ?? []).map((item) => ({
-      ...item.geo, 
-  
+      ...item.geo,
+
     }))
   } else {
     possibleLocations.value = []
   }
 });
-watch(location, ()=>{
-    if (location.value.name) {
+watch(location, () => {
+  if (location.value.name) {
     location.value.type = 'Point'
     location.value.coordinates = [
       Number(location.value.geo_lat),
@@ -201,38 +215,18 @@ watch(location, ()=>{
             <v-row>
               <v-col cols="12">
                 <div class="label">Название</div>
-                <!-- {{ rest }} -->
-                {{ location }}
-                <v-text-field
-                  v-model="title.value.value"
-                  :error-messages="title.errorMessage.value"
-                  placeholder="Шаурма"
-                  variant="outlined"
-                  density="compact"
-                  class="w-100"
-                />
+                <v-text-field v-model="title.value.value" :error-messages="title.errorMessage.value"
+                  placeholder="Шаурма" variant="outlined" density="compact" class="w-100" />
               </v-col>
               <v-col cols="12" md="6">
                 <div class="label">Тип</div>
-                <v-text-field
-                  v-model="type.value.value"
-                  :error-messages="type.errorMessage.value"
-                  placeholder="кафе, магазин, доставка, ресторан"
-                  variant="outlined"
-                  density="compact"
-                  class="w-100"
-                />
+                <v-text-field v-model="type.value.value" :error-messages="type.errorMessage.value"
+                  placeholder="кафе, магазин, доставка, ресторан" variant="outlined" density="compact" class="w-100" />
               </v-col>
               <v-col cols="12" md="6">
                 <div class="label">Псевдоним</div>
-                <v-text-field
-                  v-model="alias.value.value"
-                  :error-messages="alias.errorMessage.value"
-                  placeholder="shaurma"
-                  variant="outlined"
-                  density="compact"
-                  class="w-100"
-                />
+                <v-text-field v-model="alias.value.value" :error-messages="alias.errorMessage.value"
+                  placeholder="shaurma" variant="outlined" density="compact" class="w-100" />
                 <div v-if="alias.value.value.length > 0" class="label text-right">
                   url ресторана:
                   <i style="text-decoration: underline">{{ config.public.siteUrl + "/" + alias.value.value }}</i>
@@ -240,52 +234,32 @@ watch(location, ()=>{
               </v-col>
               <v-col cols="12" md="6">
                 <div class="label">Телефон</div>
-                <v-text-field
-                  v-model="phone.value.value"
-                  :error-messages="phone.errorMessage.value"
-                  placeholder="+79127528877"
-                  variant="outlined"
-                  density="compact"
-                  class="w-100"
-                />
+                <v-text-field v-model="phone.value.value" :error-messages="phone.errorMessage.value"
+                  placeholder="+79127528877" variant="outlined" density="compact" class="w-100" />
               </v-col>
               <v-col cols="12" md="6">
                 <div class="label">Соц сеть</div>
-                <v-text-field
-                  v-model="socialMedia.value.value"
-                  :error-messages="socialMedia.errorMessage.value"
-                  placeholder="https://vk.com/shaurma"
-                  variant="outlined"
-                  density="compact"
-                  class="w-100"
-                />
+                <v-text-field v-model="socialMedia.value.value" :error-messages="socialMedia.errorMessage.value"
+                  placeholder="https://vk.com/shaurma" variant="outlined" density="compact" class="w-100" />
               </v-col>
 
               <v-col cols="12" md="6">
                 <div class="label">Расписание</div>
                 <div class="editor-container">
-                  <QuillEditor
-                    v-model:content="schedule"
-                    theme="snow"
-                    contentType="html"
-                    :toolbar="[['bold', 'italic', 'underline'], ['clean']]"
-                  />
+                  <QuillEditor v-model:content="schedule" theme="snow" contentType="html"
+                    :toolbar="[['bold', 'italic', 'underline'], ['clean']]" />
                 </div>
               </v-col>
               <v-col cols="12" md="6">
                 <div class="label">Описание</div>
                 <div class="editor-container">
-                  <QuillEditor
-                    theme="snow"
-                    v-model:content="description"
-                    contentType="html"
-                    :toolbar="[['bold', 'italic', 'underline'], [{ list: 'ordered' }, { list: 'bullet' }], ['clean']]"
-                  />
+                  <QuillEditor theme="snow" v-model:content="description" contentType="html"
+                    :toolbar="[['bold', 'italic', 'underline'], [{ list: 'ordered' }, { list: 'bullet' }], ['clean']]" />
                 </div>
               </v-col>
 
               <v-col cols="12">
-                  <v-combobox hide-details density="compact" v-model="location"   v-model:search="locationSearchRequest"
+                <v-combobox hide-details density="compact" v-model="location" v-model:search="locationSearchRequest"
                   :items="possibleLocations" item-title="name" placeholder="Место" item-value="geo" variant="outlined"
                   clearable>
                   <template v-slot:no-data>
@@ -293,6 +267,11 @@ watch(location, ()=>{
                       {{ locationSearchRequest.trim().length < 3 ? "Минимум 3 символа" : "Не найдено" }} </div>
                   </template>
                 </v-combobox>
+              </v-col>
+              <v-col cols="12" md="6" v-if="isAdmin">
+                <div class="label">Место на витрине</div>
+                <v-text-field v-model="placeOnShowcase.value.value" :error-messages="placeOnShowcase.errorMessage.value"
+                  placeholder="место на витрине" type="number" variant="outlined" density="compact" class="w-100" />
               </v-col>
 
               <v-col :cols="12" style="margin-bottom: 80px" v-if="logoPreview || headerImagePreview">
@@ -328,14 +307,8 @@ watch(location, ()=>{
               </v-col>
 
               <v-col :cols="12" class="d-flex justify-center">
-                <v-btn
-                  class="ma-auto mt-4"
-                  variant="flat"
-                  color="primary"
-                  type="submit"
-                  :loading="loading"
-                  :disabled="!meta.valid"
-                >
+                <v-btn class="ma-auto mt-4" variant="flat" color="primary" type="submit" :loading="loading"
+                  :disabled="!meta.valid">
                   Отправить
                 </v-btn>
               </v-col>
